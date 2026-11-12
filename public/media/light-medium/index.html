@@ -1,0 +1,520 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<style>[hidden]{display:none!important}body{margin:0}img{max-width:100%}</style>
+</head>
+<body>
+<title>ห้องเรียนตัวกลางของแสง</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Mitr:wght@400;500;600&family=Sarabun:wght@400;600;700&display=swap">
+<style>
+/* Layout: แถบเมนูซ้าย + พื้นที่เนื้อหาการ์ดมน (มือถือ: เมนูล่าง) โทนพาสเทลม่วง-ฟ้า-ชมพู */
+:root{
+  --bg:#F4F1FF; --surface:#FFFFFF; --soft:#ECE6FF; --ink:#2B2358; --muted:#6B6494;
+  --primary:#7C5CFA; --primary-ink:#FFFFFF; --pink:#FF6FAE; --sky:#3DA9F5; --green:#22B07D; --amber:#F5A524; --red:#E5484D;
+  --line:#DDD5FA; --stage:#DCE4EF; --stage-wall:#2C2F63;
+  --display:"Mitr","Sarabun",system-ui,sans-serif; --body:"Sarabun",system-ui,sans-serif;
+  --shadow:0 8px 24px rgba(92,64,200,.12);
+}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){
+  --bg:#17142B; --surface:#221E3D; --soft:#2D2852; --ink:#EEEAFF; --muted:#A9A2D6; --primary:#9C83FF; --primary-ink:#17142B;
+  --pink:#FF86BC; --sky:#62BBFA; --green:#3CCB94; --amber:#FFBC4A; --red:#FF6B6F; --line:#3A3466; --stage:#141532; --stage-wall:#22264F;
+  --shadow:0 8px 24px rgba(0,0,0,.35); color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#17142B; --surface:#221E3D; --soft:#2D2852; --ink:#EEEAFF; --muted:#A9A2D6; --primary:#9C83FF; --primary-ink:#17142B;
+  --pink:#FF86BC; --sky:#62BBFA; --green:#3CCB94; --amber:#FFBC4A; --red:#FF6B6F; --line:#3A3466; --stage:#141532; --stage-wall:#22264F;
+  --shadow:0 8px 24px rgba(0,0,0,.35); color-scheme:dark}
+html,body{height:100%}
+body{background:var(--bg);color:var(--ink);font-family:var(--body);font-size:17px;line-height:1.6}
+h1,h2,h3{font-family:var(--display);font-weight:600;line-height:1.25;text-wrap:balance;margin:0}
+button{font:inherit;cursor:pointer;border:0;color:inherit}
+button:focus-visible,[tabindex]:focus-visible{outline:3px solid var(--pink);outline-offset:2px}
+.app{display:grid;grid-template-columns:230px 1fr;min-height:100%}
+.side{background:var(--surface);border-right:1px solid var(--line);padding-block:20px;padding-inline:14px;display:flex;flex-direction:column;gap:6px;position:sticky;top:0;height:100vh}
+.brand{display:flex;gap:10px;align-items:center;padding:4px 8px 16px}
+.brand .logo{width:42px;height:42px;border-radius:12px;background:var(--primary);display:grid;place-items:center}
+.brand b{font-family:var(--display);font-size:17px;display:block;line-height:1.2}
+.brand small{color:var(--muted);font-size:13px}
+.nav{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:12px;background:none;text-align:left;font-family:var(--display);font-size:16px;color:var(--muted)}
+.nav .ic{width:34px;height:34px;border-radius:10px;display:grid;place-items:center;flex:none}
+.nav.on{background:var(--soft);color:var(--ink)}
+.side .grow{flex:1}
+.toggle{display:flex;gap:8px;align-items:center;padding:10px 12px;border-radius:12px;background:var(--soft);font-size:15px}
+main{padding-block:24px 100px;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));min-width:0}
+.wrap{max-width:1100px;margin:0 auto;display:flex;flex-direction:column;gap:20px}
+.eyebrow{font-size:13px;letter-spacing:.06em;color:var(--primary);font-weight:700}
+.lead{color:var(--muted);max-width:62ch;margin:6px 0 0}
+.hero{background:var(--surface);border-radius:24px;padding:28px;box-shadow:var(--shadow);display:grid;grid-template-columns:1.3fr 1fr;gap:24px;align-items:center}
+.hero h1{font-size:clamp(28px,4vw,42px)}
+.hero h1 span{color:var(--primary)}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:16px}
+.card{background:var(--surface);border-radius:20px;padding:20px;box-shadow:var(--shadow);display:flex;flex-direction:column;gap:10px;text-align:left;border:2px solid transparent;transition:transform .15s,border-color .15s}
+button.card:hover{transform:translateY(-3px);border-color:var(--line)}
+.card .ic{width:52px;height:52px;border-radius:16px;display:grid;place-items:center}
+.card h3{font-size:19px}
+.card p{margin:0;color:var(--muted);font-size:15px}
+.tag{display:inline-block;font-size:13px;font-weight:700;padding:2px 10px;border-radius:99px;background:var(--soft);color:var(--primary);align-self:flex-start}
+.i-purple{background:#EDE7FF;color:#6A48F0}.i-pink{background:#FFE4F0;color:#E0457F}.i-sky{background:#DDF0FF;color:#1E87D6}.i-green{background:#DBF6EA;color:#15895F}.i-amber{background:#FFF0D6;color:#C07A06}
+.panel{background:var(--surface);border-radius:22px;padding:22px;box-shadow:var(--shadow)}
+.tabs{display:flex;gap:8px;flex-wrap:wrap}
+.tab{padding:8px 16px;border-radius:99px;background:var(--soft);font-family:var(--display);font-size:15px;color:var(--muted)}
+.tab.on{background:var(--primary);color:var(--primary-ink)}
+.stagebox{border-radius:18px;overflow:hidden;background:var(--stage);position:relative}
+.stagebox svg{display:block;width:100%;height:auto}
+.caption{min-height:84px;font-family:var(--display);font-size:clamp(18px,2.2vw,24px);padding:14px 18px;background:var(--soft);border-radius:14px;display:flex;align-items:center}
+.ctrl{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{padding:10px 20px;border-radius:14px;background:var(--primary);color:var(--primary-ink);font-family:var(--display);font-size:16px;display:inline-flex;gap:8px;align-items:center}
+.btn.ghost{background:var(--soft);color:var(--ink)}
+.btn:disabled{opacity:.5;cursor:default}
+.dots{display:flex;gap:6px}
+.dots i{width:10px;height:10px;border-radius:50%;background:var(--line)}
+.dots i.on{background:var(--primary)}
+.mats{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:10px}
+.mat{padding:12px;border-radius:14px;background:var(--soft);font-family:var(--display);font-size:15px;border:2px solid transparent}
+.mat.on{border-color:var(--primary);background:var(--surface)}
+.badge{position:absolute;top:14px;left:14px;padding:6px 14px;border-radius:99px;font-family:var(--display);font-size:16px;background:rgba(255,255,255,.92);color:#2B2358}
+/* drag game */
+.pool{display:flex;flex-wrap:wrap;gap:10px;min-height:60px;padding:14px;border-radius:16px;background:var(--soft)}
+.chip{padding:8px 16px;border-radius:99px;background:var(--surface);font-family:var(--display);font-size:16px;box-shadow:0 2px 6px rgba(60,40,140,.12);border:2px solid transparent;touch-action:none}
+.chip.sel{border-color:var(--primary);transform:scale(1.06)}
+.chip.shake{animation:shake .4s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.baskets{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px}
+.basket{border-radius:18px;padding:12px;min-height:170px;border:3px dashed var(--line);background:var(--surface);display:flex;flex-direction:column;gap:8px;text-align:left}
+.basket.over{border-color:var(--primary);background:var(--soft)}
+.basket h3{font-size:17px;display:flex;align-items:center;gap:8px}
+.basket .in{display:flex;flex-wrap:wrap;gap:6px}
+.basket .in span{font-size:14px;padding:3px 10px;border-radius:99px;background:var(--soft)}
+/* quiz */
+.q{display:grid;grid-template-columns:200px 1fr;gap:20px;align-items:start}
+.q .pic{background:var(--soft);border-radius:18px;aspect-ratio:1;display:grid;place-items:center;max-width:100%}
+.q h3{font-size:clamp(19px,2.3vw,24px);margin-bottom:12px}
+.choices{display:grid;gap:10px}
+.choice{text-align:left;padding:12px 16px;border-radius:14px;background:var(--soft);font-size:17px;border:2px solid transparent;display:flex;gap:10px;align-items:center}
+.choice b{font-family:var(--display);width:30px;height:30px;border-radius:50%;background:var(--surface);display:grid;place-items:center;flex:none}
+.choice.right{border-color:var(--green);background:color-mix(in srgb,var(--green) 16%,var(--surface))}
+.choice.wrong{border-color:var(--red);background:color-mix(in srgb,var(--red) 14%,var(--surface))}
+.explain{margin-top:12px;padding:12px 16px;border-radius:14px;background:color-mix(in srgb,var(--sky) 14%,var(--surface));font-size:16px}
+.bar{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}
+.score{font-family:var(--display);font-size:17px;padding:6px 14px;border-radius:99px;background:var(--soft);font-variant-numeric:tabular-nums}
+.meter{height:14px;border-radius:99px;background:var(--soft);overflow:hidden}
+.meter i{display:block;height:100%;background:var(--primary);border-radius:99px;transition:width .6s}
+.srow{display:grid;grid-template-columns:200px 1fr 70px;gap:14px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line)}
+.srow b{font-family:var(--display);font-variant-numeric:tabular-nums;text-align:right}
+.done{text-align:center;padding:24px}
+.done .big{font-family:var(--display);font-size:56px;color:var(--primary);font-variant-numeric:tabular-nums}
+.flame{transform-origin:400px 205px;animation:flick 1.2s ease-in-out infinite alternate}
+@keyframes flick{0%{transform:scale(1,1)}50%{transform:scale(.94,1.06)}100%{transform:scale(1.04,.97)}}
+#sheet,.slide{transition:transform 1s cubic-bezier(.3,1.3,.5,1)}
+#candle{transition:filter .9s,opacity .9s}
+.fade{transition:opacity .8s}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+@media (max-width:820px){
+  .app{grid-template-columns:1fr}
+  .side{position:fixed;inset:auto 0 0 0;height:auto;flex-direction:row;justify-content:space-around;padding-block:6px calc(6px + env(safe-area-inset-bottom,0px));padding-inline:max(6px,env(safe-area-inset-left,0px)) max(6px,env(safe-area-inset-right,0px));border-right:0;border-top:1px solid var(--line);z-index:20;gap:2px}
+  .brand,.side .grow,.toggle{display:none}
+  .nav{flex-direction:column;gap:2px;font-size:12px;padding:6px 4px}
+  .hero{grid-template-columns:1fr}
+  .q{grid-template-columns:1fr}.q .pic{max-width:170px}
+  .baskets{grid-template-columns:1fr}
+  .srow{grid-template-columns:1fr 60px}.srow .meter{grid-column:1/-1}
+}
+</style>
+
+<div class="app">
+  <nav class="side" aria-label="เมนูหลัก">
+    <div class="brand"><div class="logo"><svg width="26" height="26" viewBox="0 0 24 24" fill="none"><path d="M12 3c2 3 4 4.5 4 8a4 4 0 0 1-8 0c0-2 1-3 1.5-4 .5 1.5 1.5 2 2.5 2 0-2-1-4 0-6Z" fill="#FFD66B"/><rect x="10" y="15" width="4" height="6" rx="1" fill="#fff"/></svg></div><div><b>ตัวกลางของแสง</b><small>วิทยาศาสตร์ ป.4</small></div></div>
+    <button class="nav on" data-view="home"><span class="ic i-purple"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M12 3 3 10v10h6v-6h6v6h6V10z"/></svg></span>หน้าหลัก</button>
+    <button class="nav" data-view="learn"><span class="ic i-sky"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"/></svg></span>เรียนรู้</button>
+    <button class="nav" data-view="lab"><span class="ic i-amber"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M9 3h6v2h-1v5l5 9a1.5 1.5 0 0 1-1.3 2H6.3A1.5 1.5 0 0 1 5 19l5-9V5H9z"/></svg></span>ห้องทดลอง</button>
+    <button class="nav" data-view="practice"><span class="ic i-pink"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M4 4h16v4H4zm0 6h10v4H4zm0 6h16v4H4z"/></svg></span>แบบฝึกหัด</button>
+    <button class="nav" data-view="score"><span class="ic i-green"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M4 20V10h4v10zm6 0V4h4v16zm6 0v-7h4v7z"/></svg></span>คะแนน</button>
+    <div class="grow"></div>
+    <button class="toggle" id="muteBtn" aria-pressed="false">🔊 เสียง: เปิด</button>
+  </nav>
+
+  <main><div class="wrap" id="view"></div></main>
+</div>
+
+<script>
+/* ---------- เสียงเอฟเฟกต์ (สังเคราะห์ด้วย Web Audio) ---------- */
+let AC=null,muted=false;
+function ac(){if(!AC){try{AC=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}return AC}
+function tone(f,d,type='sine',v=.18,delay=0,f2){const a=ac();if(!a||muted)return;const t=a.currentTime+delay,o=a.createOscillator(),g=a.createGain();o.type=type;o.frequency.setValueAtTime(f,t);if(f2)o.frequency.exponentialRampToValueAtTime(f2,t+d);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.001,t+d);o.connect(g).connect(a.destination);o.start(t);o.stop(t+d+.02)}
+function noise(d=.6){const a=ac();if(!a||muted)return;const b=a.createBuffer(1,a.sampleRate*d,a.sampleRate),c=b.getChannelData(0);for(let i=0;i<c.length;i++)c[i]=Math.random()*2-1;const s=a.createBufferSource();s.buffer=b;const f=a.createBiquadFilter();f.type='bandpass';f.Q.value=2;const t=a.currentTime;f.frequency.setValueAtTime(300,t);f.frequency.exponentialRampToValueAtTime(3000,t+d);const g=a.createGain();g.gain.setValueAtTime(.001,t);g.gain.linearRampToValueAtTime(.25,t+d*.4);g.gain.exponentialRampToValueAtTime(.001,t+d);s.connect(f).connect(g).connect(a.destination);s.start()}
+const sfx={
+  correct(){tone(660,.14,'triangle');tone(990,.25,'triangle',.18,.12)},
+  wrong(){tone(220,.3,'sawtooth',.08,0,140)},
+  pop(){tone(500,.1,'sine',.2,0,900)},
+  whoosh(){noise(.6)},
+  sparkle(){[1200,1500,1800,2400].forEach((f,i)=>tone(f,.18,'sine',.1,i*.08))},
+  tada(){[523,659,784,1046].forEach((f,i)=>tone(f,.3,'triangle',.14,i*.11))}
+};
+document.getElementById('muteBtn').onclick=e=>{muted=!muted;e.currentTarget.textContent=muted?'🔇 เสียง: ปิด':'🔊 เสียง: เปิด';e.currentTarget.setAttribute('aria-pressed',muted);if(muted)stopSpeak()};
+
+/* ---------- เสียงบรรยายที่ครูอัดเอง ----------
+   วางไฟล์เสียงในโฟลเดอร์ audio ข้างไฟล์นี้ ตั้งชื่อตามบท เช่น audio/clear-1.mp3
+   (รองรับ .mp3 .m4a .wav) หรือกดปุ่ม "ใส่ไฟล์เสียงของครู" ในหน้าเรียนรู้ */
+const userAudio={};let speakToken=0,curAudio=null;
+function voiceList(n){return userAudio[n]?[userAudio[n]]:['mp3','m4a','wav'].map(x=>'audio/'+n+'.'+x)}
+function playVoice(name,text,done){
+  stopSpeak();const my=++speakToken;let fin=false;
+  const end=()=>{if(fin||my!==speakToken)return;fin=true;setTimeout(()=>done&&done(),500)};
+  const silent=()=>setTimeout(end,Math.max(3000,text.length*90));
+  if(muted){silent();return}
+  const list=voiceList(name);let k=0;
+  const tryNext=()=>{if(my!==speakToken)return;if(k>=list.length){silent();return}
+    const a=new Audio(list[k++]);curAudio=a;a.onended=end;a.onerror=tryNext;a.play().catch(()=>{if(a.error)return;tryNext()})};
+  tryNext();
+}
+function stopSpeak(){speakToken++;if(curAudio){try{curAudio.pause()}catch(e){}curAudio=null}}
+function checkVoice(name){return new Promise(res=>{const l=voiceList(name);let k=0;const t=()=>{if(k>=l.length)return res(false);const a=new Audio();a.preload='metadata';a.onloadedmetadata=()=>res(true);a.onerror=t;a.src=l[k++]};t()})}
+
+/* ---------- เวทีแอนิเมชัน (SVG) ---------- */
+const STAGE=`<svg viewBox="0 0 800 450" role="img" aria-label="ฉากแอนิเมชัน">
+<defs>
+ <linearGradient id="wall" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F3F6FB"/><stop offset="1" stop-color="#DCE4EF"/></linearGradient>
+ <linearGradient id="table" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#D49C63"/><stop offset=".15" stop-color="#C08850"/><stop offset="1" stop-color="#8E5C2E"/></linearGradient>
+ <linearGradient id="wax" x1="0" x2="1"><stop offset="0" stop-color="#E4D3B0"/><stop offset=".35" stop-color="#FFFBF1"/><stop offset=".7" stop-color="#F6EBD3"/><stop offset="1" stop-color="#D8C39B"/></linearGradient>
+ <radialGradient id="glow"><stop offset="0" stop-color="#FFD98A" stop-opacity=".75"/><stop offset=".5" stop-color="#FFD98A" stop-opacity=".25"/><stop offset="1" stop-color="#FFD98A" stop-opacity="0"/></radialGradient>
+ <radialGradient id="flameO" cx=".5" cy=".7" r=".6"><stop offset="0" stop-color="#FFF8D6"/><stop offset=".45" stop-color="#FFC34A"/><stop offset="1" stop-color="#FF7A1A" stop-opacity=".85"/></radialGradient>
+ <linearGradient id="glass" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".55"/><stop offset=".3" stop-color="#DFF2F5" stop-opacity=".12"/><stop offset=".6" stop-color="#FFFFFF" stop-opacity=".05"/><stop offset=".75" stop-color="#FFFFFF" stop-opacity=".35"/><stop offset="1" stop-color="#CFEDEA" stop-opacity=".18"/></linearGradient>
+ <linearGradient id="woodG" x1="0" x2="1"><stop offset="0" stop-color="#C9955F"/><stop offset=".5" stop-color="#D9A872"/><stop offset="1" stop-color="#B98149"/></linearGradient>
+ <filter id="grainF" x="0" y="0" width="1" height="1"><feTurbulence type="fractalNoise" baseFrequency="0.006 0.18" numOctaves="3" seed="7"/><feColorMatrix values="0 0 0 0 .38  0 0 0 0 .2  0 0 0 0 .06  0 0 0 1.4 -.45"/></filter>
+ <filter id="frostF" x="0" y="0" width="1" height="1"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="2"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 .35 0"/></filter>
+ <filter id="soft"><feGaussianBlur stdDeviation="5"/></filter>
+ <linearGradient id="metal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9AA3B2"/><stop offset=".35" stop-color="#EEF1F5"/><stop offset=".6" stop-color="#7C8596"/><stop offset="1" stop-color="#4C5463"/></linearGradient>
+ <linearGradient id="beam" x1="0" x2="1"><stop offset="0" stop-color="#FFF4C2" stop-opacity=".8"/><stop offset="1" stop-color="#FFF4C2" stop-opacity=".25"/></linearGradient>
+ <linearGradient id="cer" x1="0" x2="1"><stop offset="0" stop-color="#E9E4DA"/><stop offset=".4" stop-color="#FFFFFF"/><stop offset="1" stop-color="#C9C2B4"/></linearGradient>
+<linearGradient id="metalH" x1="0" x2="1"><stop offset="0" stop-color="#5E6675"/><stop offset=".25" stop-color="#C9CFD8"/><stop offset=".4" stop-color="#F4F6F9"/><stop offset=".6" stop-color="#A3ABB8"/><stop offset="1" stop-color="#4F5665"/></linearGradient>
+</defs>
+<rect width="800" height="450" fill="url(#wall)"/>
+<rect x="560" y="30" width="190" height="140" rx="6" fill="#BFD9F2" stroke="#fff" stroke-width="8"/><line x1="655" y1="30" x2="655" y2="170" stroke="#fff" stroke-width="6"/>
+<rect y="355" width="800" height="95" fill="url(#table)"/>
+<rect y="355" width="800" height="95" filter="url(#grainF)" opacity=".7"/>
+<rect y="352" width="800" height="6" fill="#E2B27C"/>
+<!-- มุมมองด้านหน้า -->
+<g id="front" class="fade">
+ <ellipse cx="400" cy="362" rx="150" ry="16" fill="#5a3a1a" opacity=".18"/>
+ <g id="candle">
+  <circle cx="400" cy="195" r="150" fill="url(#glow)"/>
+  <ellipse cx="400" cy="356" rx="62" ry="10" fill="#B9BEC8"/><ellipse cx="400" cy="352" rx="58" ry="8" fill="#E7EAF0"/>
+  <rect x="372" y="232" width="56" height="122" rx="4" fill="url(#wax)"/>
+  <ellipse cx="400" cy="232" rx="28" ry="6" fill="#F4E8CC"/><ellipse cx="400" cy="232" rx="20" ry="3.5" fill="#E8D7B2"/>
+  <path d="M376 234q-3 16 2 24q4-8 2-24z" fill="#FBF3E2"/>
+  <path d="M399 232q-1-8 2-15" stroke="#3a2a1a" stroke-width="3" fill="none" stroke-linecap="round"/>
+  <g class="flame">
+   <ellipse cx="400" cy="190" rx="34" ry="46" fill="#FFB347" opacity=".25" filter="url(#soft)"/>
+   <path d="M400 148c12 18 19 32 19 46a19 19 0 0 1-38 0c0-14 7-28 19-46Z" fill="url(#flameO)"/>
+   <ellipse cx="400" cy="210" rx="6" ry="7" fill="#5B8CFF" opacity=".55"/>
+   <path d="M400 172c5 9 8 15 8 22a8 8 0 0 1-16 0c0-7 3-13 8-22Z" fill="#FFFDF0"/>
+  </g>
+ </g>
+ <g id="sheet" style="transform:translateX(580px)">
+  <rect x="236" y="330" width="16" height="30" rx="3" fill="#5f6672"/><rect x="548" y="330" width="16" height="30" rx="3" fill="#5f6672"/>
+  <rect id="sheetRect" x="240" y="96" width="320" height="250" rx="3" fill="url(#glass)" stroke="#BFE3E0" stroke-opacity=".9" stroke-width="4"/>
+  <rect id="frostTex" x="240" y="96" width="320" height="250" filter="url(#frostF)" opacity="0"/>
+  <rect id="woodTex" x="240" y="96" width="320" height="250" filter="url(#grainF)" opacity="0"/>
+  <g id="shine" opacity=".8"><path d="M262 300l70-180h22l-70 180z" fill="#fff" opacity=".35"/><path d="M300 320l60-150h9l-60 150z" fill="#fff" opacity=".3"/></g>
+ </g>
+<g id="bagG" class="slide" style="transform:translateX(580px)">
+  <path d="M290 125q0-70 45-70t45 70M420 125q0-70 45-70t45 70" stroke="#DCEEF8" stroke-width="7" fill="none" opacity=".9"/>
+  <path d="M255 125H545L560 352H240Z" fill="#EAF6FF" fill-opacity=".14" stroke="#DCEEF8" stroke-width="3"/>
+  <g stroke="#fff" stroke-width="2.5" fill="none" opacity=".75"><path d="M285 150l25 60-10 50 20 70"/><path d="M500 140l-20 70 15 40-20 80"/><path d="M380 135l15 30-20 40"/><path d="M260 300l60-15 40 20"/></g>
+ </g>
+ <g id="waxG" class="slide" style="transform:translateX(580px)">
+  <path d="M245 100H555V318Q545 352 510 352H245Z" fill="#F4EACB" fill-opacity=".6"/>
+  <rect x="245" y="100" width="310" height="252" filter="url(#frostF)" opacity=".5"/>
+  <path d="M510 352Q545 352 555 318Q520 322 510 352Z" fill="#DCCB9C"/>
+  <g stroke="#D9C79A" stroke-width="2" opacity=".7"><line x1="245" y1="185" x2="555" y2="180"/><line x1="380" y1="100" x2="385" y2="352"/></g>
+  <rect x="235" y="92" width="44" height="16" rx="2" fill="#F2E6A0" opacity=".85" transform="rotate(-12 257 100)"/><rect x="522" y="92" width="44" height="16" rx="2" fill="#F2E6A0" opacity=".85" transform="rotate(12 544 100)"/>
+ </g>
+ <g id="canG" class="slide" style="transform:translateX(580px)">
+  <ellipse cx="400" cy="350" rx="150" ry="18" fill="#4F5665"/>
+  <rect x="250" y="90" width="300" height="260" fill="url(#metalH)"/>
+  <g stroke="#5E6675" stroke-width="3" opacity=".45"><line x1="250" y1="150" x2="550" y2="150"/><line x1="250" y1="200" x2="550" y2="200"/><line x1="250" y1="250" x2="550" y2="250"/><line x1="250" y1="300" x2="550" y2="300"/></g>
+  <ellipse cx="400" cy="90" rx="150" ry="20" fill="#D7DCE3" stroke="#8A93A2" stroke-width="4"/>
+  <ellipse cx="400" cy="90" rx="128" ry="14" fill="none" stroke="#9AA3B2" stroke-width="3"/>
+ </g>
+</g>
+<!-- มุมมองด้านข้าง -->
+<g id="side" class="fade" opacity="0">
+ <rect width="800" height="450" fill="#141a33" opacity=".55"/>
+ <polygon id="beam1" points="168,205 400,135 400,305 168,235" fill="url(#beam)"/>
+ <polygon id="beam2" points="424,135 660,80 660,360 424,305" fill="url(#beam)"/>
+ <g transform="translate(40 190)"><rect width="110" height="40" rx="8" fill="url(#metal)"/><path d="M110 -6h22l12 -10v92l-12 -10h-22z" fill="url(#metal)"/><rect x="30" y="14" width="22" height="12" rx="3" fill="#2a2f3a"/><ellipse cx="144" cy="30" rx="6" ry="44" fill="#FFF9DD"/></g>
+ <text x="100" y="275" text-anchor="middle" fill="#fff" font-family="Mitr,sans-serif" font-size="18">ไฟฉาย</text>
+ <path d="M660 60l60 -14v350l-60 -14z" fill="#F7F7F4"/><rect x="684" y="396" width="10" height="-1" fill="#888"/>
+ <text x="690" y="430" text-anchor="middle" fill="#fff" font-family="Mitr,sans-serif" font-size="18">ฉาก</text>
+ <ellipse id="spot" cx="690" cy="220" rx="22" ry="135" fill="#FFF1A8" opacity=".9" filter="url(#soft)"/>
+ <g id="shadowBig" opacity="0" filter="url(#soft)"><path id="shadowPath" d="" fill="#2a2440" opacity=".85"/></g>
+ <g id="obj" opacity="0">
+  <rect id="objRect" x="398" y="130" width="24" height="180" rx="2" fill="url(#glass)" stroke="#BFE3E0" stroke-width="3"/>
+  <rect id="objFrost" x="398" y="130" width="24" height="180" filter="url(#frostF)" opacity="0"/>
+  <rect id="objWood" x="398" y="130" width="24" height="180" filter="url(#grainF)" opacity="0"/>
+ </g>
+ <g id="cup" opacity="0" transform="translate(372 180)"><path d="M0 0h62l-7 82q-2 12-14 12H21q-12 0-14-12z" fill="url(#cer)"/><ellipse cx="31" cy="0" rx="31" ry="6" fill="#d8d2c6"/><path d="M60 20q26 0 23 25t-28 20" stroke="#E2DCD0" stroke-width="9" fill="none"/></g>
+ <path id="objBag" opacity="0" d="M410 128q10 18 0 36q-10 18 0 36q10 18 0 36q-10 18 0 36q10 18 0 36" stroke="#E4F3FB" stroke-width="5" fill="none"/>
+ <g id="objCan" opacity="0"><ellipse cx="410" cy="305" rx="38" ry="8" fill="#4F5665"/><rect x="372" y="165" width="76" height="140" fill="url(#metalH)"/><ellipse cx="410" cy="165" rx="38" ry="8" fill="#D7DCE3" stroke="#8A93A2" stroke-width="2"/></g>
+ <text id="objLabel" x="410" y="342" text-anchor="middle" fill="#fff" font-family="Mitr,sans-serif" font-size="18"></text>
+</g>
+</svg>`;
+
+
+const MAT={
+ none:{name:'ไม่มีอะไรบัง',type:null},
+ clear:{name:'กระจกใส',type:'clear'},
+ bag:{name:'ถุงพลาสติกใส',type:'clear'},
+ wax:{name:'กระดาษไข',type:'frost'},
+ frost:{name:'กระจกฝ้า',type:'frost'},
+ wood:{name:'แผ่นไม้',type:'wood'},
+ can:{name:'กระป๋องโลหะ',type:'wood'}
+};
+const TYPE={clear:{label:'ตัวกลางโปร่งใส',see:'มองเห็นชัดเจน',c:'#22B07D'},frost:{label:'ตัวกลางโปร่งแสง',see:'มองเห็นไม่ชัด',c:'#F5A524'},wood:{label:'วัตถุทึบแสง',see:'มองไม่เห็น',c:'#E5484D'}};
+
+function setStage(root,s){
+  const $=id=>root.querySelector('#'+id);
+  const side=s.mode==='side',t=s.type,m=t?(s.mat&&s.mat!=='none'?s.mat:t):null,cup=!!s.cup;
+  $('front').setAttribute('opacity',side?0:1);$('side').setAttribute('opacity',side?1:0);
+  const on='translateX(0)',off='translateX(580px)',sheetM=['clear','frost','wood'].includes(m);
+  $('sheet').style.transform=sheetM?on:off;
+  $('bagG').style.transform=m==='bag'?on:off;$('waxG').style.transform=m==='wax'?on:off;$('canG').style.transform=m==='can'?on:off;
+  if(sheetM){const L={clear:['url(#glass)','#BFE3E0',4,0,0,.8,1],frost:['#E3EEF4','#9FB2C0',12,1,0,.15,.55],wood:['url(#woodG)','#8E5C2E',4,0,1,0,1]}[m];
+    const r=$('sheetRect');r.setAttribute('fill',L[0]);r.setAttribute('stroke',L[1]);r.setAttribute('stroke-width',L[2]);r.setAttribute('fill-opacity',L[6]);
+    $('frostTex').setAttribute('opacity',L[3]);$('woodTex').setAttribute('opacity',L[4]);$('shine').setAttribute('opacity',L[5])}
+  const cf={frost:['blur(7px)',1],wax:['blur(9px) sepia(.4)',1]}[m]||['none',1];
+  $('candle').style.filter=cf[0];$('candle').style.opacity=cf[1];
+  // ด้านข้าง
+  $('obj').setAttribute('opacity',!cup&&['clear','frost','wood','wax'].includes(m)?1:0);
+  $('objBag').setAttribute('opacity',!cup&&m==='bag'?1:0);$('objCan').setAttribute('opacity',!cup&&m==='can'?1:0);
+  $('cup').setAttribute('opacity',cup?1:0);
+  const SL={clear:['url(#glass)','#BFE3E0',1],frost:['#E3EEF4','#9FB2C0',.85],wood:['url(#woodG)','#8E5C2E',1],wax:['#F3E7C6','#E2D2A6',.9]}[m];
+  if(SL){const r=$('objRect');r.setAttribute('fill',SL[0]);r.setAttribute('stroke',SL[1]);r.setAttribute('fill-opacity',SL[2])}
+  $('objFrost').setAttribute('opacity',m==='frost'||m==='wax'?1:0);$('objWood').setAttribute('opacity',m==='wood'&&!cup?1:0);
+  const pass=cup||!m?1:{clear:1,bag:1,frost:.4,wax:.3,wood:0,can:0}[m];
+  $('beam2').setAttribute('opacity',pass);$('spot').setAttribute('opacity',pass>0&&pass<1?.4:.9);
+  $('shadowPath').setAttribute('d',cup?'M682 168l16-2l-2 92q0 10-6 11l-6 0q-3-1-3-11z':m==='can'?'M674 140h32v190h-32z':'M680 112l20-5v230l-20-5z');
+  $('shadowBig').setAttribute('opacity',s.shadow&&(cup||m==='wood'||m==='can')?1:0);
+  $('objLabel').textContent=s.objLabel||'';
+  const badge=root.querySelector('.badge');
+  if(badge){if(s.badge){badge.hidden=false;badge.textContent=s.badge;badge.style.background=s.badgeColor||'rgba(255,255,255,.92)';badge.style.color=s.badgeColor?'#fff':'#2B2358'}else badge.hidden=true}
+}
+/* ---------- บทเรียนโมชันกราฟิก ---------- */
+const LESSONS=[
+ {key:'engage',e:'Engage',title:'ปริศนาเทียนไข',steps:[
+  {t:'สวัสดีจ้ะ วันนี้เรามีเทียนไขยิ้มแป้นอยู่หนึ่งเล่ม เรามองเห็นเทียนได้ชัดเจนเลยใช่ไหม',s:{mode:'front',type:null}},
+  {t:'ถ้าเอากระจกใสมาบัง เรายังมองเห็นเทียนชัดอยู่ไหมนะ',s:{mode:'front',type:'clear'},fx:'whoosh'},
+  {t:'แล้วถ้าเปลี่ยนเป็นกระจกฝ้าล่ะ เทียนจะเป็นอย่างไร',s:{mode:'front',type:'frost'},fx:'whoosh'},
+  {t:'และถ้าเป็นแผ่นไม้ เรายังเห็นเทียนไหม ลองทายกันดูนะ',s:{mode:'front',type:'wood'},fx:'whoosh'},
+  {t:'วัตถุแต่ละชนิดให้แสงผ่านได้ไม่เท่ากัน วันนี้เราจะมาหาคำตอบกัน',s:{mode:'front',type:null},fx:'sparkle'}]},
+ {key:'medium',e:'Explain',title:'ตัวกลางของแสงคืออะไร',steps:[
+  {t:'แสงเดินทางออกจากไฟฉาย เป็นเส้นตรงไปถึงฉาก',s:{mode:'side',type:null},fx:'pop'},
+  {t:'ถ้าเอาวัตถุมากั้นทางเดินของแสง แสงจะเคลื่อนที่ผ่านวัตถุนั้นได้ไม่เท่ากัน',s:{mode:'side',type:'clear',objLabel:'วัตถุที่นำมากั้น'},fx:'whoosh'},
+  {t:'สิ่งที่แสงเคลื่อนที่ผ่านได้ เรียกว่า ตัวกลางของแสง',s:{mode:'side',type:'clear',objLabel:'ตัวกลางของแสง'},fx:'sparkle'},
+  {t:'เราแบ่งวัตถุที่นำมากั้นแสงได้ 3 ประเภท โดยดูว่ามองเห็นสิ่งที่อยู่ด้านหลังได้อย่างไร',s:{mode:'front',type:null}}]},
+ {key:'clear',e:'Explain',title:'ตัวกลางโปร่งใส',steps:[
+  {t:'ตัวกลางโปร่งใส คือวัตถุที่แสงเคลื่อนที่ผ่านได้ดี หรือผ่านได้ทั้งหมด',s:{mode:'side',type:'clear',objLabel:'กระจกใส'},fx:'whoosh'},
+  {t:'ดูสิ แสงทะลุผ่านไปถึงฉากได้เต็มที่',s:{mode:'side',type:'clear',objLabel:'กระจกใส',badge:'แสงผ่านได้ทั้งหมด',badgeColor:'#22B07D'},fx:'pop'},
+  {t:'เมื่อนำมากั้นแสง เราจะมองเห็นสิ่งที่อยู่ด้านหลังได้ชัดเจน',s:{mode:'front',type:'clear',badge:'มองเห็นชัดเจน',badgeColor:'#22B07D'},fx:'correct'},
+  {t:'ตัวอย่างเช่น อากาศ น้ำ ถุงพลาสติกใส แก้วใส และกระจกใส',s:{mode:'front',type:'clear',badge:'ตัวกลางโปร่งใส',badgeColor:'#22B07D'},fx:'sparkle'}]},
+ {key:'frost',e:'Explain',title:'ตัวกลางโปร่งแสง',steps:[
+  {t:'ตัวกลางโปร่งแสง คือวัตถุที่แสงเคลื่อนที่ผ่านได้บางส่วน',s:{mode:'side',type:'frost',objLabel:'กระดาษไข'},fx:'whoosh'},
+  {t:'สังเกตว่าแสงที่ไปถึงฉากจางลง เพราะผ่านไปได้แค่บางส่วน',s:{mode:'side',type:'frost',objLabel:'กระดาษไข',badge:'แสงผ่านได้บางส่วน',badgeColor:'#F5A524'},fx:'pop'},
+  {t:'เมื่อนำมากั้นแสง เราจะมองเห็นสิ่งที่อยู่ด้านหลังได้ไม่ชัดเจน มัวๆ',s:{mode:'front',type:'frost',badge:'มองเห็นไม่ชัด',badgeColor:'#F5A524'},fx:'correct'},
+  {t:'ตัวอย่างเช่น หมอก กระดาษไข กระเบื้องกรองแสง ขวดแก้วสีชา และกระจกฝ้า',s:{mode:'front',type:'frost',badge:'ตัวกลางโปร่งแสง',badgeColor:'#F5A524'},fx:'sparkle'}]},
+ {key:'wood',e:'Explain',title:'วัตถุทึบแสงและเงา',steps:[
+  {t:'วัตถุทึบแสง คือวัตถุที่แสงเคลื่อนที่ผ่านไม่ได้เลย',s:{mode:'side',type:'wood',objLabel:'แผ่นไม้'},fx:'whoosh'},
+  {t:'เมื่อนำมากั้นแสง เราจะมองไม่เห็นสิ่งที่อยู่ด้านหลัง',s:{mode:'front',type:'wood',badge:'มองไม่เห็น',badgeColor:'#E5484D'},fx:'pop'},
+  {t:'บริเวณที่แสงผ่านไปไม่ได้ จะเกิดเป็นเงาบนฉากด้านหลังวัตถุ',s:{mode:'side',type:'wood',shadow:true,objLabel:'แผ่นไม้',badge:'เกิดเงา',badgeColor:'#7C5CFA'},fx:'sparkle'},
+  {t:'เงาจะมีรูปร่างคล้ายกับวัตถุที่นำมากั้นแสง ลองดูเงาของถ้วยใบนี้สิ',s:{mode:'side',type:'wood',cup:true,shadow:true,objLabel:'ถ้วยเซรามิก'},fx:'pop'},
+  {t:'ตัวอย่างวัตถุทึบแสง เช่น ยางลบ กล่องกระดาษ แผ่นกระเบื้อง แผ่นไม้ ถ้วยเซรามิก และกระป๋องโลหะ',s:{mode:'front',type:'wood',badge:'วัตถุทึบแสง',badgeColor:'#E5484D'},fx:'sparkle'}]},
+ {key:'sum',e:'Explain',title:'สรุปบทเรียน',steps:[
+  {t:'ตัวกลางโปร่งใส แสงผ่านได้ทั้งหมด มองเห็นชัดเจน',s:{mode:'front',type:'clear',badge:'โปร่งใส: ชัดเจน',badgeColor:'#22B07D'},fx:'pop'},
+  {t:'ตัวกลางโปร่งแสง แสงผ่านได้บางส่วน มองเห็นไม่ชัดเจน',s:{mode:'front',type:'frost',badge:'โปร่งแสง: ไม่ชัด',badgeColor:'#F5A524'},fx:'pop'},
+  {t:'วัตถุทึบแสง แสงผ่านไม่ได้ มองไม่เห็น และเกิดเงา',s:{mode:'front',type:'wood',badge:'ทึบแสง: มองไม่เห็น',badgeColor:'#E5484D'},fx:'pop'},
+  {t:'เก่งมาก ต่อไปไปลองทำแบบฝึกหัดกันเลย',s:{mode:'front',type:null},fx:'tada'}]}
+];
+
+/* ---------- คะแนน ---------- */
+const scores={sort:null,book:null,explain:null,solve:null};
+const SNAME={sort:'จำแนกวัตถุลงตะกร้า',book:'ควิซจากหนังสือ',explain:'อธิบายเหตุการณ์',solve:'สถานการณ์แก้ปัญหา'};
+
+/* ---------- ไอคอนวัตถุสำหรับควิซ ---------- */
+const PIC={
+ cup:'<svg viewBox="0 0 120 120" width="120"><path d="M25 35h60l-6 55q-1 10-11 10H42q-10 0-11-10z" fill="#CFEFFF" fill-opacity=".6" stroke="#7FB8D9" stroke-width="3"/><path d="M84 48q20 2 16 20t-20 14" stroke="#7FB8D9" stroke-width="5" fill="none"/></svg>',
+ can:'<svg viewBox="0 0 120 120" width="120"><rect x="22" y="28" width="34" height="70" rx="8" fill="#F26B4F"/><rect x="62" y="28" width="34" height="70" rx="8" fill="#F26B4F"/><rect x="22" y="58" width="34" height="12" fill="#fff"/><rect x="62" y="58" width="34" height="12" fill="#fff"/><rect x="34" y="34" width="10" height="3" fill="#222"/><rect x="74" y="34" width="10" height="3" fill="#222"/></svg>',
+ wax:'<svg viewBox="0 0 120 120" width="120"><rect x="20" y="20" width="60" height="78" fill="#F3F1EA" stroke="#D8D3C4" stroke-width="2" transform="rotate(-8 50 60)"/><rect x="40" y="22" width="60" height="78" fill="#F7F5EF" fill-opacity=".85" stroke="#D8D3C4" stroke-width="2" transform="rotate(6 70 60)"/></svg>',
+ bag:'<svg viewBox="0 0 120 120" width="120"><rect x="18" y="22" width="44" height="76" fill="#FF8DC7" fill-opacity=".6"/><rect x="36" y="22" width="44" height="76" fill="#8C7CF0" fill-opacity=".55"/><rect x="54" y="22" width="48" height="76" fill="#E9F35A" fill-opacity=".65"/><rect x="70" y="30" width="18" height="7" rx="3" fill="#6A6FD0"/></svg>',
+ plate:'<svg viewBox="0 0 120 120" width="120"><ellipse cx="60" cy="64" rx="48" ry="20" fill="#E3F4FF" fill-opacity=".6" stroke="#8CC2E0" stroke-width="3"/><ellipse cx="60" cy="64" rx="20" ry="8" fill="none" stroke="#8CC2E0" stroke-width="2"/></svg>',
+ board:'<svg viewBox="0 0 120 120" width="120"><circle cx="60" cy="62" r="42" fill="#D9A55A"/><circle cx="60" cy="62" r="34" fill="none" stroke="#B9823A" stroke-width="2"/><path d="M98 48q14 6 4 18" stroke="#E0567C" stroke-width="3" fill="none"/></svg>',
+ fog:'<svg viewBox="0 0 120 120" width="120"><rect width="120" height="120" fill="#CFE6F5"/><path d="M50 95V60l12-14 12 14v35z" fill="#5B8F5B" opacity=".5"/><g fill="#fff" opacity=".8"><ellipse cx="30" cy="70" rx="40" ry="12"/><ellipse cx="90" cy="85" rx="40" ry="12"/><ellipse cx="60" cy="50" rx="45" ry="10"/></g></svg>',
+ tree:'<svg viewBox="0 0 120 120" width="120"><circle cx="100" cy="20" r="12" fill="#FFC93C"/><rect x="40" y="55" width="10" height="40" fill="#8A5527"/><circle cx="45" cy="45" r="22" fill="#4CAF50"/><ellipse cx="80" cy="98" rx="34" ry="7" fill="#3A3A5A" opacity=".6"/></svg>',
+ fish:'<svg viewBox="0 0 120 120" width="120"><rect x="14" y="26" width="92" height="70" rx="8" fill="#BFE6FF" fill-opacity=".5" stroke="#7FB8D9" stroke-width="3"/><path d="M45 60q15-14 32 0q-17 14-32 0z" fill="#FF8A3D"/><path d="M77 60l12-8v16z" fill="#FF8A3D"/><circle cx="52" cy="58" r="2" fill="#222"/></svg>',
+ bath:'<svg viewBox="0 0 120 120" width="120"><rect x="20" y="15" width="80" height="90" rx="6" fill="#EAF4FB" stroke="#9DB7C9" stroke-width="3"/><g fill="#fff" opacity=".7"><circle cx="40" cy="40" r="10"/><circle cx="70" cy="60" r="14"/><circle cx="50" cy="82" r="10"/></g></svg>',
+ dark:'<svg viewBox="0 0 120 120" width="120"><rect x="18" y="20" width="84" height="78" rx="4" fill="#5B4FA8"/><path d="M18 20q20 40 0 78M102 20q-20 40 0 78" fill="#7C5CFA"/><circle cx="60" cy="50" r="10" fill="#FFE26B"/></svg>',
+ shop:'<svg viewBox="0 0 120 120" width="120"><rect x="16" y="40" width="88" height="58" rx="6" fill="#DDF0FF" fill-opacity=".7" stroke="#7FB8D9" stroke-width="3"/><circle cx="40" cy="78" r="10" fill="#FF6FAE"/><rect x="58" y="68" width="22" height="18" rx="3" fill="#F5A524"/><path d="M16 40l10-16h68l10 16z" fill="#FF6FAE"/></svg>',
+ roof:'<svg viewBox="0 0 120 120" width="120"><path d="M10 50l50-26 50 26" fill="#F4ECD6" fill-opacity=".8" stroke="#C9B98E" stroke-width="3"/><rect x="22" y="50" width="76" height="46" fill="#E9E6F7"/><rect x="40" y="66" width="40" height="22" rx="6" fill="#3DA9F5"/></svg>',
+ puppet:'<svg viewBox="0 0 120 120" width="120"><rect x="14" y="18" width="92" height="70" fill="#FFF3B0"/><path d="M45 70q0-26 15-30q15 4 15 30z" fill="#2B2358"/><circle cx="60" cy="36" r="9" fill="#2B2358"/><rect x="56" y="88" width="8" height="24" fill="#8A5527"/></svg>'
+};
+
+const BOOK=[
+ {pic:'cup',q:'แก้วใบนี้เป็นวัตถุประเภทใด',a:0,ex:'แก้วใสให้แสงผ่านได้ทั้งหมด มองเห็นด้านหลังชัดเจน จึงเป็นตัวกลางโปร่งใส'},
+ {pic:'can',q:'กระป๋องออมสินเป็นวัตถุประเภทใด',a:2,ex:'กระป๋องโลหะแสงผ่านไม่ได้ มองไม่เห็นด้านหลัง จึงเป็นวัตถุทึบแสง'},
+ {pic:'wax',q:'กระดาษไขเป็นวัตถุประเภทใด',a:1,ex:'กระดาษไขให้แสงผ่านได้บางส่วน มองเห็นด้านหลังไม่ชัด จึงเป็นตัวกลางโปร่งแสง'},
+ {pic:'bag',q:'ถุงพลาสติกสีขุ่นเหล่านี้เป็นวัตถุประเภทใด',a:1,ex:'ถุงพลาสติกสีขุ่นให้แสงผ่านได้บางส่วน มองเห็นด้านหลังไม่ชัด จึงเป็นตัวกลางโปร่งแสง'},
+ {pic:'plate',q:'จานรองแก้วใสเป็นวัตถุประเภทใด',a:0,ex:'จานแก้วใสให้แสงผ่านได้ทั้งหมด จึงเป็นตัวกลางโปร่งใส'},
+ {pic:'board',q:'เขียงไม้เป็นวัตถุประเภทใด',a:2,ex:'ไม้แสงผ่านไม่ได้ จึงเป็นวัตถุทึบแสง'},
+ {q:'วัตถุที่เป็นตัวกลางโปร่งใสมีลักษณะสำคัญอย่างไร',c:['แสงผ่านได้ทั้งหมด มองเห็นด้านหลังชัดเจน','แสงผ่านได้บางส่วน มองเห็นด้านหลังไม่ชัด','แสงผ่านไม่ได้ มองไม่เห็นด้านหลัง'],a:0,ex:'ตัวกลางโปร่งใสให้แสงผ่านได้ดีหรือผ่านได้ทั้งหมด'},
+ {q:'วัตถุที่เป็นตัวกลางโปร่งแสงมีลักษณะสำคัญอย่างไร',c:['แสงผ่านไม่ได้ เกิดเงา','แสงผ่านได้บางส่วน มองเห็นด้านหลังไม่ชัด','แสงผ่านได้ทั้งหมด มองเห็นชัด'],a:1,ex:'ตัวกลางโปร่งแสงให้แสงผ่านได้บางส่วน'},
+ {q:'วัตถุทึบแสงมีลักษณะสำคัญอย่างไร',c:['แสงผ่านได้บางส่วน','แสงผ่านได้ทั้งหมด','แสงผ่านไม่ได้ มองไม่เห็นด้านหลัง และเกิดเงา'],a:2,ex:'วัตถุทึบแสงกั้นแสงไว้ทั้งหมด จึงเกิดเงาที่มีรูปร่างคล้ายวัตถุ'}
+];
+const EXPLAIN=[
+ {pic:'fog',q:'ตอนเช้าที่มีหมอกหนา ทำไมเรามองเห็นภูเขาไกลๆ ไม่ชัด',c:['เพราะหมอกเป็นวัตถุทึบแสง','เพราะหมอกเป็นตัวกลางโปร่งแสง แสงผ่านได้บางส่วน','เพราะแสงเดินทางไม่ได้ตอนเช้า'],a:1,ex:'หมอกให้แสงผ่านได้เพียงบางส่วน ภาพที่มองผ่านหมอกจึงไม่ชัด'},
+ {pic:'tree',q:'ทำไมใต้ต้นไม้ตอนกลางวันจึงมีเงา',c:['เพราะต้นไม้เป็นวัตถุทึบแสง แสงผ่านไม่ได้','เพราะต้นไม้เป็นตัวกลางโปร่งใส','เพราะต้นไม้ปล่อยแสงออกมาเอง'],a:0,ex:'ลำต้นและใบไม้กั้นแสงแดดไว้ บริเวณด้านหลังที่แสงไปไม่ถึงจึงเกิดเงา'},
+ {pic:'fish',q:'ทำไมเราจึงมองเห็นปลาในตู้กระจกได้ชัดเจน',c:['เพราะกระจกและน้ำเป็นวัตถุทึบแสง','เพราะปลาเรืองแสงได้','เพราะกระจกใสและน้ำเป็นตัวกลางโปร่งใส แสงผ่านได้ทั้งหมด'],a:2,ex:'ทั้งกระจกใสและน้ำให้แสงผ่านได้ทั้งหมด เราจึงเห็นปลาชัดเจน'},
+ {pic:'bath',q:'ประตูห้องน้ำทำด้วยกระจกฝ้า คนด้านนอกจะเห็นอย่างไร',c:['เห็นคนด้านในชัดเจน','เห็นเพียงเงาลางๆ ไม่ชัด เพราะกระจกฝ้าเป็นตัวกลางโปร่งแสง','มองไม่เห็นแสงเลย'],a:1,ex:'กระจกฝ้าให้แสงผ่านได้บางส่วน คนด้านนอกจึงเห็นเพียงลางๆ'},
+ {q:'ถ้าเอาหนังสือมาบังไฟฉาย แล้วเงาบนผนังมีรูปสี่เหลี่ยม เพราะเหตุใด',c:['เพราะเงามีรูปร่างคล้ายวัตถุที่นำมากั้นแสง','เพราะเงาเป็นรูปสี่เหลี่ยมเสมอ','เพราะไฟฉายเป็นสี่เหลี่ยม'],a:0,ex:'หนังสือเป็นวัตถุทึบแสง เงาที่เกิดจึงมีรูปร่างคล้ายหนังสือ'}
+];
+const SOLVE=[
+ {pic:'bath',q:'แม่อยากทำหน้าต่างห้องน้ำที่ให้แสงเข้าได้ แต่คนข้างนอกมองไม่เห็นชัด ควรใช้วัสดุใด',c:['กระจกใส','กระจกฝ้า','แผ่นไม้'],a:1,ex:'กระจกฝ้าเป็นตัวกลางโปร่งแสง แสงเข้าได้บางส่วน แต่มองผ่านไม่ชัด'},
+ {pic:'dark',q:'พี่ทำงานกะดึก อยากให้ห้องนอนมืดตอนกลางวัน ควรเลือกผ้าม่านแบบใด',c:['ผ้าม่านทึบแสง','ผ้าม่านลูกไม้บาง','แผ่นพลาสติกใส'],a:0,ex:'ผ้าม่านทึบแสงกั้นแสงไม่ให้ผ่าน ห้องจึงมืด'},
+ {pic:'shop',q:'ร้านขนมอยากให้ลูกค้าเห็นขนมในตู้ได้ชัดเจน ควรทำตู้ด้วยอะไร',c:['กระดาษไข','แผ่นอะลูมิเนียม','กระจกใส'],a:2,ex:'กระจกใสเป็นตัวกลางโปร่งใส ลูกค้าจึงมองเห็นขนมชัดเจน'},
+ {pic:'roof',q:'อยากทำหลังคาโรงจอดรถที่ไม่ร้อนจ้าเกินไป แต่ยังมีแสงสว่าง ควรใช้อะไร',c:['กระเบื้องกรองแสง','กระจกใส','สังกะสีทึบ'],a:0,ex:'กระเบื้องกรองแสงเป็นตัวกลางโปร่งแสง แสงผ่านได้บางส่วน จึงสว่างแต่ไม่จ้า'},
+ {pic:'puppet',q:'นักเรียนจะเล่นละครหุ่นเงา ควรทำตัวหุ่นจากวัสดุใดจึงจะเห็นเงาชัด',c:['แผ่นพลาสติกใส','กระดาษแข็ง','ถุงพลาสติกใส'],a:1,ex:'กระดาษแข็งเป็นวัตถุทึบแสง จึงเกิดเงารูปร่างคล้ายหุ่นบนฉาก'}
+];
+const TYPES3=['ตัวกลางโปร่งใส','ตัวกลางโปร่งแสง','วัตถุทึบแสง'];
+const SORT=[['ลูกฟุตบอล',2],['กระจกฝ้า',1],['ขวดแก้วใส',0],['ขวดแก้วสีชา',1],['แผ่นอะลูมิเนียม',2],['แผ่นพลาสติกใส',0],['กล่องลัง',2],['ตุ๊กตาหมี',2],['กระดาษสี',2],['เลนส์แว่นขยาย',0],['กระดาษไข',1],['เลนส์แว่นสายตา',0],['น้ำ',0],['ตู้ไม้',2],['โอ่งมังกร',2],['ไม้ปิงปอง',2],['กระจกเงา',2],['ขวดพลาสติกขุ่น',1]];
+
+/* ---------- การแสดงผลแต่ละหน้า ---------- */
+const V=document.getElementById('view');
+let cur='home';
+function go(v){stopSpeak();cur=v;document.querySelectorAll('.nav').forEach(n=>n.classList.toggle('on',n.dataset.view===v));render();window.scrollTo(0,0)}
+document.querySelectorAll('.nav').forEach(n=>n.onclick=()=>{ac();go(n.dataset.view)});
+
+function render(){({home,learn,lab,practice,score})[cur]()}
+
+function home(){
+ V.innerHTML=`<section class="hero"><div><div class="eyebrow">วิทยาศาสตร์ ป.4 · การเรียนรู้แบบ 5E</div>
+  <h1>ห้องเรียน<span>ตัวกลางของแสง</span></h1>
+  <p class="lead">ดูแอนิเมชันพร้อมเสียงบรรยาย ทดลองเอาวัตถุมาบังเทียน แล้วฝึกคิดวิเคราะห์ จำแนกวัตถุ และแก้ปัญหาในชีวิตประจำวัน</p>
+  <div class="ctrl" style="margin-top:16px"><button class="btn" data-go="learn">▶ เริ่มเรียน</button><button class="btn ghost" data-go="practice">ไปทำแบบฝึกหัด</button></div></div>
+  <div class="stagebox" id="heroStage">${STAGE}<div class="badge" hidden></div></div></section>
+ <section class="cards">
+  ${[['Engage','สร้างความสนใจ','ปริศนาเทียนไขหลังแผ่นปริศนา 3 แผ่น','learn','i-purple'],['Explore','สำรวจและค้นหา','ห้องทดลอง เลือกวัตถุมาบังเทียนเอง','lab','i-amber'],['Explain','อธิบายและสรุป','แอนิเมชัน 3 ประเภทพร้อมเสียงบรรยาย','learn','i-sky'],['Elaborate','ขยายความรู้','จำแนกวัตถุ อธิบายเหตุการณ์ แก้ปัญหา','practice','i-pink'],['Evaluate','ประเมินผล','ควิซจากแบบฝึกหัดในหนังสือ และสรุปคะแนน','score','i-green']].map(c=>`
+  <button class="card" data-go="${c[3]}"><span class="ic ${c[4]}" style="font-family:var(--display);font-size:20px">${c[0][0]}</span><span class="tag">${c[0]}</span><h3>${c[1]}</h3><p>${c[2]}</p></button>`).join('')}
+ </section>`;
+ bindGo();
+ const st=document.getElementById('heroStage');let i=0;const seq=[null,'clear','frost','wood'];
+ setStage(st,{mode:'front',type:null});
+ clearInterval(window._hero);window._hero=setInterval(()=>{if(!document.body.contains(st))return clearInterval(window._hero);i=(i+1)%4;const t=seq[i];setStage(st,{mode:'front',type:t,badge:t?TYPE[t].see:'',badgeColor:t?TYPE[t].c:''})},2600);
+}
+function bindGo(){V.querySelectorAll('[data-go]').forEach(b=>b.onclick=()=>{ac();if(b.dataset.go==='practice'&&b.dataset.tab)practiceTab=b.dataset.tab;go(b.dataset.go)})}
+
+let lessonIdx=0;
+function learn(){
+ V.innerHTML=`<div><div class="eyebrow">Engage · Explain</div><h2 style="font-size:30px">เรียนรู้ด้วยแอนิเมชัน</h2><p class="lead">กด “เล่น” เพื่อฟังเสียงบรรยาย หรือกด “ถัดไป” เพื่ออธิบายเองทีละขั้น</p></div>
+ <div class="tabs" id="ltabs">${LESSONS.map((l,i)=>`<button class="tab ${i===lessonIdx?'on':''}" data-i="${i}">${i+1}. ${l.title}</button>`).join('')}</div>
+ <section class="panel" style="display:flex;flex-direction:column;gap:14px">
+  <div class="bar"><h3 style="font-size:22px" id="ltitle"></h3><span class="tag" id="le"></span></div>
+  <div class="stagebox" id="lstage">${STAGE}<div class="badge" hidden></div></div>
+  <div class="caption" id="cap"></div>
+  <div class="bar"><div class="ctrl"><button class="btn" id="play">▶ เล่น</button><button class="btn ghost" id="prev">◀ ก่อนหน้า</button><button class="btn ghost" id="next">ถัดไป ▶</button></div><div class="dots" id="dots"></div></div>
+  <div class="bar" style="background:var(--soft);border-radius:14px;padding:10px 14px"><span id="vstat" style="font-size:15px">กำลังตรวจไฟล์เสียง…</span><label class="btn ghost" style="background:var(--surface);cursor:pointer">🎙 ใส่ไฟล์เสียงของครู<input type="file" id="aud" accept="audio/*" multiple hidden></label></div>
+ </section>`;
+ const st=document.getElementById('lstage');let step=0,playing=false;const L=()=>LESSONS[lessonIdx];
+ function show(n,withFx=true){step=n;const s=L().steps[n];setStage(st,s.s);document.getElementById('cap').textContent=s.t;
+  document.getElementById('dots').innerHTML=L().steps.map((_,i)=>`<i class="${i===n?'on':''}"></i>`).join('');
+  if(withFx&&s.fx)sfx[s.fx]();document.getElementById('prev').disabled=n===0;document.getElementById('next').disabled=n===L().steps.length-1}
+ function playFrom(n){playing=true;document.getElementById('play').textContent='⏸ หยุด';show(n);playVoice(L().key+'-'+(n+1),L().steps[n].t,()=>{if(!playing)return;if(n<L().steps.length-1)playFrom(n+1);else stop()})}
+ function stop(){playing=false;stopSpeak();const p=document.getElementById('play');if(p)p.textContent='▶ เล่น'}
+ document.getElementById('ltitle').textContent=L().title;document.getElementById('le').textContent=L().e;
+ show(0,false);
+ const vs=document.getElementById('vstat');Promise.all(L().steps.map((_,i)=>checkVoice(L().key+'-'+(i+1)))).then(r=>{const n=r.filter(Boolean).length;if(vs)vs.textContent=n?`มีเสียงครู ${n}/${r.length} ท่อน (ไฟล์ ${L().key}-1 ถึง ${L().key}-${r.length})`:`ยังไม่มีเสียงครู ตั้งชื่อไฟล์ ${L().key}-1 ถึง ${L().key}-${r.length}`});
+ document.getElementById('aud').onchange=e=>{[...e.target.files].forEach(f=>{userAudio[f.name.replace(/\.[^.]+$/,'')]=URL.createObjectURL(f)});learn()};
+ document.getElementById('play').onclick=()=>{ac();playing?stop():playFrom(step===L().steps.length-1?0:step)};
+ document.getElementById('next').onclick=()=>{ac();stop();show(Math.min(step+1,L().steps.length-1))};
+ document.getElementById('prev').onclick=()=>{ac();stop();show(Math.max(step-1,0))};
+ document.querySelectorAll('#ltabs .tab').forEach(b=>b.onclick=()=>{ac();stop();lessonIdx=+b.dataset.i;sfx.pop();learn()});
+}
+
+function lab(){
+ V.innerHTML=`<div><div class="eyebrow">Explore</div><h2 style="font-size:30px">ห้องทดลอง: เอาอะไรมาบังเทียนดี</h2><p class="lead">เลือกวัตถุมาบังเทียน แล้วให้นักเรียนช่วยกันบอกว่ามองเห็นเทียนชัด ไม่ชัด หรือมองไม่เห็น ก่อนกดเฉลย</p></div>
+ <section class="panel" style="display:flex;flex-direction:column;gap:14px">
+  <div class="mats" id="mats">${Object.entries(MAT).map(([k,m])=>`<button class="mat ${k==='none'?'on':''}" data-k="${k}">${m.name}</button>`).join('')}</div>
+  <div class="stagebox" id="labStage">${STAGE}<div class="badge" hidden></div></div>
+  <div class="bar"><div class="ctrl"><button class="btn ghost" id="viewBtn">สลับมุมมอง: ด้านหน้า</button><button class="btn" id="reveal">เฉลยประเภท</button></div><span class="score" id="labAns">เลือกวัตถุด้านบน</span></div>
+ </section>`;
+ const st=document.getElementById('labStage');let k='none',mode='front';
+ const upd=()=>{const t=MAT[k].type;setStage(st,{mode,type:t,mat:k,objLabel:MAT[k].name,shadow:true})};
+ upd();
+ document.querySelectorAll('.mat').forEach(b=>b.onclick=()=>{ac();k=b.dataset.k;document.querySelectorAll('.mat').forEach(x=>x.classList.toggle('on',x===b));sfx.whoosh();document.getElementById('labAns').textContent='ทายก่อนนะ แล้วกดเฉลย';upd()});
+ document.getElementById('viewBtn').onclick=e=>{ac();mode=mode==='front'?'side':'front';e.currentTarget.textContent='สลับมุมมอง: '+(mode==='front'?'ด้านหน้า':'ด้านข้าง (ไฟฉาย)');sfx.pop();upd()};
+ document.getElementById('reveal').onclick=()=>{ac();const t=MAT[k].type;const msg=t?`${MAT[k].name} = ${TYPE[t].label} (${TYPE[t].see})`:'ยังไม่มีวัตถุมาบัง';document.getElementById('labAns').textContent=msg;if(t)sfx.sparkle()};
+}
+
+let practiceTab='sort';
+function practice(){
+ V.innerHTML=`<div><div class="eyebrow">Elaborate · Evaluate</div><h2 style="font-size:30px">แบบฝึกหัด</h2><p class="lead">ช่วยกันคิด ช่วยกันตอบบนจอ คะแนนจะนับจากคำตอบแรกของแต่ละข้อ</p></div>
+ <div class="tabs" id="ptabs">${Object.entries(SNAME).map(([k,n])=>`<button class="tab ${k===practiceTab?'on':''}" data-k="${k}">${n}</button>`).join('')}</div>
+ <section class="panel" id="pbox"></section>`;
+ document.querySelectorAll('#ptabs .tab').forEach(b=>b.onclick=()=>{ac();practiceTab=b.dataset.k;sfx.pop();practice()});
+ const box=document.getElementById('pbox');
+ if(practiceTab==='sort')sortGame(box);
+ if(practiceTab==='book')quiz(box,'book',BOOK.map(q=>({...q,c:q.c||TYPES3})));
+ if(practiceTab==='explain')quiz(box,'explain',EXPLAIN);
+ if(practiceTab==='solve')quiz(box,'solve',SOLVE);
+}
+
+function sortGame(box){
+ const items=SORT.map((x,i)=>({n:x[0],a:x[1],i})).sort(()=>Math.random()-.5);
+ let firstRight=0,tried=new Set(),left=items.length,sel=null;
+ box.innerHTML=`<div class="bar" style="margin-bottom:12px"><h3 style="font-size:20px">จำแนกวัตถุที่นำมากั้นแสง (หนังสือข้อ 3)</h3><span class="score" id="sc">ถูกครั้งแรก 0 / ${items.length}</span></div>
+ <p style="margin:0 0 10px;color:var(--muted)">แตะวัตถุ แล้วแตะตะกร้าที่ถูกต้อง หรือลากไปวางก็ได้</p>
+ <div class="pool" id="pool">${items.map(x=>`<button class="chip" draggable="true" data-i="${x.i}">${x.n}</button>`).join('')}</div>
+ <div class="baskets" style="margin-top:14px">${TYPES3.map((t,i)=>`<div class="basket" data-b="${i}" tabindex="0" role="button" aria-label="ตะกร้า ${t}"><h3><span class="ic ${['i-green','i-amber','i-pink'][i]}" style="width:30px;height:30px;border-radius:9px;display:grid;place-items:center">${['◎','◐','●'][i]}</span>${t}</h3><div class="in"></div></div>`).join('')}</div>`;
+ const sc=box.querySelector('#sc');
+ function drop(chip,b){if(!chip)return;const it=SORT[+chip.dataset.i];const key=chip.dataset.i;
+  if(it[1]===+b.dataset.b){if(!tried.has(key))firstRight++;tried.add(key);sfx.correct();const s=document.createElement('span');s.textContent=it[0];b.querySelector('.in').appendChild(s);chip.remove();left--;sel=null;
+   sc.textContent=`ถูกครั้งแรก ${firstRight} / ${items.length}`;
+   if(!left){scores.sort={c:firstRight,t:items.length};sfx.tada();box.insertAdjacentHTML('beforeend',`<div class="done"><div class="big">${firstRight}/${items.length}</div><p>จำแนกครบทุกชิ้นแล้ว เก่งมาก</p><button class="btn" id="again">เล่นอีกครั้ง</button></div>`);box.querySelector('#again').onclick=()=>sortGame(box)}}
+  else{tried.add(key);sfx.wrong();chip.classList.remove('shake');void chip.offsetWidth;chip.classList.add('shake')}}
+ box.querySelectorAll('.chip').forEach(c=>{c.onclick=()=>{ac();box.querySelectorAll('.chip').forEach(x=>x.classList.remove('sel'));sel=c;c.classList.add('sel');sfx.pop()};c.ondragstart=e=>{ac();sel=c;e.dataTransfer.setData('text','x')}});
+ box.querySelectorAll('.basket').forEach(b=>{b.onclick=()=>drop(sel,b);b.onkeydown=e=>{if(e.key==='Enter')drop(sel,b)};b.ondragover=e=>{e.preventDefault();b.classList.add('over')};b.ondragleave=()=>b.classList.remove('over');b.ondrop=e=>{e.preventDefault();b.classList.remove('over');drop(sel,b)}});
+}
+
+function quiz(box,key,qs){
+ let i=0,right=0;
+ function draw(){
+  if(i>=qs.length){scores[key]={c:right,t:qs.length};sfx.tada();box.innerHTML=`<div class="done"><div class="big">${right}/${qs.length}</div><p>${right===qs.length?'ถูกทุกข้อ ยอดเยี่ยมมาก':right>=qs.length*.7?'ผ่านเกณฑ์ เก่งมาก':'ลองทบทวนบทเรียนแล้วทำอีกครั้งนะ'}</p><div class="ctrl" style="justify-content:center"><button class="btn" id="again">ทำอีกครั้ง</button><button class="btn ghost" id="toScore">ดูคะแนนรวม</button></div></div>`;
+   box.querySelector('#again').onclick=()=>quiz(box,key,qs);box.querySelector('#toScore').onclick=()=>go('score');return}
+  const q=qs[i];
+  box.innerHTML=`<div class="bar" style="margin-bottom:14px"><span class="tag">ข้อ ${i+1} จาก ${qs.length}</span><span class="score">ถูก ${right}</span></div>
+  <div class="q" style="${q.pic?'':'grid-template-columns:1fr'}">${q.pic?`<div class="pic">${PIC[q.pic]}</div>`:''}<div><h3>${q.q}</h3>
+  <div class="choices">${q.c.map((c,j)=>`<button class="choice" data-j="${j}"><b>${'กขค'[j]}</b>${c}</button>`).join('')}</div><div id="ex"></div></div></div>`;
+  let answered=false;
+  box.querySelectorAll('.choice').forEach(b=>b.onclick=()=>{ac();if(answered)return;answered=true;const j=+b.dataset.j;
+   box.querySelectorAll('.choice')[q.a].classList.add('right');
+   if(j===q.a){right++;sfx.correct()}else{b.classList.add('wrong');sfx.wrong()}
+   box.querySelector('#ex').innerHTML=`<div class="explain"><b>${j===q.a?'ถูกต้อง!':'ยังไม่ถูกนะ'}</b> ${q.ex}</div><div class="ctrl" style="margin-top:12px"><button class="btn" id="nx">${i<qs.length-1?'ข้อต่อไป ▶':'ดูผลคะแนน'}</button></div>`;
+   box.querySelector('#nx').onclick=()=>{stopSpeak();i++;sfx.pop();draw()}});
+ }
+ draw();
+}
+
+function score(){
+ const done=Object.values(scores).filter(Boolean);const c=done.reduce((a,s)=>a+s.c,0),t=done.reduce((a,s)=>a+s.t,0);
+ V.innerHTML=`<div><div class="eyebrow">Evaluate</div><h2 style="font-size:30px">สรุปคะแนนของห้อง</h2><p class="lead">เกณฑ์ผ่าน: ตอบถูกอย่างน้อยร้อยละ 70 คะแนนเก็บไว้เฉพาะตอนเปิดหน้านี้อยู่</p></div>
+ <section class="panel">
+  <div class="bar" style="margin-bottom:8px"><h3 style="font-size:22px">คะแนนรวม</h3><span class="score">${t?`${c}/${t} (${Math.round(c/t*100)}%)`:'ยังไม่มีคะแนน'}</span></div>
+  ${Object.entries(SNAME).map(([k,n])=>{const s=scores[k];const p=s?Math.round(s.c/s.t*100):0;return `<div class="srow"><span>${n}</span><div class="meter"><i style="width:${p}%;background:${s?(p>=70?'var(--green)':'var(--amber)'):'var(--line)'}"></i></div><b>${s?`${s.c}/${s.t}`:'—'}</b></div>`}).join('')}
+  <div class="ctrl" style="margin-top:16px"><button class="btn" data-go="practice">ไปทำแบบฝึกหัด</button><button class="btn ghost" id="reset">ล้างคะแนน</button></div>
+ </section>`;
+ bindGo();document.getElementById('reset').onclick=()=>{for(const k in scores)scores[k]=null;sfx.pop();score()};
+}
+render();
+</script>
+
+</body>
+</html>
