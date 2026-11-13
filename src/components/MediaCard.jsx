@@ -5,24 +5,23 @@ export default function MediaCard({ item }) {
   const ready = item.status === 'ready';
   const body = (
     <>
-      <div className={'cover t-' + subj.color}>
-        <span className="cover-icon">{item.icon}</span>
-        {item.grade && <span className="grade">{item.grade}</span>}
-      </div>
-      <div className="card-body">
-        <span className="subject">{subj.icon} {subj.name}</span>
-        <h3>{item.title}</h3>
-        <p>{item.description}</p>
-        <div className="tags">
-          {item.tags.map((t) => <span key={t}>{t}</span>)}
-        </div>
-      </div>
-      <div className="card-foot">
-        {ready ? <span className="go">เปิดสื่อ →</span> : <span className="soon">กำลังจัดทำ</span>}
-      </div>
+      <span className="stage-card-top">
+        <span className="stage-icon">{item.icon}</span>
+        {item.grade && <span className="grade-pill">{item.grade}</span>}
+      </span>
+      <span className="stage-number">{subj.name}</span>
+      <strong>{item.title}</strong>
+      <span className="stage-description">{item.description}</span>
+      {item.tags.length > 0 && (
+        <span className="tags">{item.tags.map((t) => <span key={t}>{t}</span>)}</span>
+      )}
+      <span className="card-link">
+        {ready ? <>เปิดสื่อ <span aria-hidden="true">→</span></> : 'กำลังจัดทำ'}
+      </span>
     </>
   );
+  const cls = `stage-card ${subj.color}`;
   return ready
-    ? <a className="card" href={'#/media/' + item.id}>{body}</a>
-    : <div className="card disabled" aria-disabled="true">{body}</div>;
+    ? <a className={cls} href={'#/media/' + item.id}>{body}</a>
+    : <div className={cls + ' disabled'} aria-disabled="true">{body}</div>;
 }

@@ -1,5 +1,5 @@
 import { useMemo, useState } from 'react';
-import { sfx } from '../../lib/sound.js';
+import { sfx, setMuted, isMuted } from '../../lib/sound.js';
 
 // ตัวอย่างสื่อที่เขียนด้วย React ล้วน: ดูภาพ ฟังเสียง เลือกคำศัพท์
 const WORDS = [
@@ -39,6 +39,8 @@ export default function ClassroomWords() {
   const [i, setI] = useState(0);
   const [picked, setPicked] = useState(null);
   const [score, setScore] = useState(0);
+  const [muted, setM] = useState(isMuted());
+  const toggleMute = () => { setM(!muted); setMuted(!muted); };
   const q = round[i];
   const done = i >= round.length;
 
@@ -58,7 +60,7 @@ export default function ClassroomWords() {
       <div className="game done">
         <div className="big">{score}/{round.length}</div>
         <p>{score === round.length ? 'Excellent! ถูกทุกข้อ' : score >= 7 ? 'Great job! เก่งมาก' : 'Good try! ลองอีกครั้งนะ'}</p>
-        <button className="btn" onClick={restart}>Play again</button>
+        <button className="button button-primary" onClick={restart}>Play again</button>
       </div>
     );
   }
@@ -69,12 +71,13 @@ export default function ClassroomWords() {
         <span className="pill">ข้อ {i + 1} / {round.length}</span>
         <div className="meter"><i style={{ width: progress + '%' }} /></div>
         <span className="pill">⭐ {score}</span>
+        <button className="pill" onClick={toggleMute} aria-pressed={muted}>{muted ? '🔇 ปิดเสียง' : '🔊 เสียง'}</button>
       </div>
       <div className="game-q">
         <div className="pic" aria-label={q.th}>{q.pic}</div>
         <div>
           <h2>What is this?</h2>
-          <button className="btn ghost" onClick={() => say(q.word)}>🔊 ฟังเสียง</button>
+          <button className="button button-secondary" onClick={() => say(q.word)}>🔊 ฟังเสียง</button>
         </div>
       </div>
       <div className="choices">
@@ -86,9 +89,9 @@ export default function ClassroomWords() {
         })}
       </div>
       {picked && (
-        <div className="feedback">
+        <div className="feedback-bar">
           <span><b>{q.word}</b> แปลว่า {q.th}</span>
-          <button className="btn" onClick={next}>Next ▶</button>
+          <button className="button button-primary" onClick={next}>Next ▶</button>
         </div>
       )}
     </div>

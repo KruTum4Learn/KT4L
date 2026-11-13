@@ -8,10 +8,10 @@
 import ClassroomWords from '../media/english-classroom/ClassroomWords.jsx';
 
 export const SUBJECTS = {
-  science: { name: 'วิทยาศาสตร์', color: 'sky', icon: '🔬' },
+  science: { name: 'วิทยาศาสตร์', color: 'blue', icon: '🔬' },
   english: { name: 'ภาษาอังกฤษ', color: 'pink', icon: '🔤' },
   computer: { name: 'วิทยาการคำนวณ', color: 'purple', icon: '💻' },
-  other: { name: 'อื่นๆ', color: 'amber', icon: '⭐' },
+  other: { name: 'อื่นๆ', color: 'orange', icon: '⭐' },
 };
 
 export const MEDIA = [

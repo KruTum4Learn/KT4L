@@ -2,26 +2,31 @@ import { MEDIA, SUBJECTS } from '../data/media.js';
 import MediaCard from '../components/MediaCard.jsx';
 
 export default function LibraryPage({ subject }) {
-  const list = subject ? MEDIA.filter((m) => m.subject === subject) : MEDIA;
+  const ready = MEDIA.filter((m) => m.status === 'ready');
+  const list = subject ? ready.filter((m) => m.subject === subject) : ready;
+  const activeSubjects = Object.entries(SUBJECTS).filter(([k]) => ready.some((m) => m.subject === k));
   return (
-    <div className="wrap">
-      <div>
-        <p className="eyebrow">คลังสื่อ</p>
-        <h1 className="page-title">{subject ? SUBJECTS[subject]?.name : 'สื่อทั้งหมด'}</h1>
+    <section className="lesson-section first">
+      <div className="section-heading">
+        <div>
+          <span className="section-kicker">คลังสื่อ</span>
+          <h2 className="page-title">{subject ? SUBJECTS[subject]?.name : 'สื่อทั้งหมด'}</h2>
+        </div>
+        <span className="heading-decoration">✧</span>
       </div>
       <div className="chips">
-        <a className={'chip' + (!subject ? ' on' : '')} href="#/library">ทั้งหมด</a>
-        {Object.entries(SUBJECTS).map(([k, s]) => (
-          <a key={k} className={'chip' + (subject === k ? ' on' : '')} href={'#/library/' + k}>
+        <a className={'nav-link' + (!subject ? ' active' : '')} href="#/library">ทั้งหมด</a>
+        {activeSubjects.map(([k, s]) => (
+          <a key={k} className={'nav-link' + (subject === k ? ' active' : '')} href={'#/library/' + k}>
             {s.icon} {s.name}
           </a>
         ))}
       </div>
       {list.length ? (
-        <div className="grid">{list.map((m) => <MediaCard key={m.id} item={m} />)}</div>
+        <div className="stage-grid">{list.map((m) => <MediaCard key={m.id} item={m} />)}</div>
       ) : (
-        <div className="empty">ยังไม่มีสื่อในวิชานี้ เพิ่มได้ที่ไฟล์ src/data/media.js</div>
+        <div className="empty">ยังไม่มีสื่อในวิชานี้ <a href="#/library">ดูสื่อทั้งหมด</a></div>
       )}
-    </div>
+    </section>
   );
 }

@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import Sidebar from './components/Sidebar.jsx';
+import Topbar from './components/Topbar.jsx';
 import HomePage from './pages/HomePage.jsx';
 import LibraryPage from './pages/LibraryPage.jsx';
 import PlayerPage from './pages/PlayerPage.jsx';
@@ -27,9 +27,15 @@ export default function App() {
   else page = <HomePage />;
 
   return (
-    <div className="app">
-      <Sidebar active={section} />
-      <main className="main">{page}</main>
+    <div className="app-shell">
+      <Topbar section={section} param={param} />
+      <main className={'page-content' + (section === 'media' ? ' wide' : '')}>
+        {page}
+        <footer className="footer">
+          <span>ห้องเรียนครูตั้ม</span>
+          <span>เรียนรู้ด้วยความสงสัย แล้วค้นพบคำตอบด้วยตัวเอง</span>
+        </footer>
+      </main>
     </div>
   );
 }
