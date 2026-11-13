@@ -1,8 +1,8 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 
-// base: './' ทำให้นำไปวางบน GitHub Pages หรือโฮสต์ใดก็ได้
+// base: '/' เพราะเว็บใช้ลิงก์แบบปกติ (/learn/<id>) ไฟล์ต้องโหลดจากรากเว็บเสมอ
 export default defineConfig({
   plugins: [react()],
-  base: './',
+  base: '/',
 });

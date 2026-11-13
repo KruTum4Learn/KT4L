@@ -2,10 +2,11 @@ import { useId, useMemo, useState } from 'react';
 import { MEDIA, SUBJECTS } from '../data/media.js';
 import MediaCard from './MediaCard.jsx';
 import Icon from './Icon.jsx';
+import { to, navigate } from '../lib/router.js';
 import { SUBJECT_ICON, KIND_ICON, kindOf, matchesQuery, uniqueSorted } from '../lib/mediaView.js';
 
 // ช่องค้นหา + ตัวกรอง (วิชา / ระดับชั้น / ประเภทสื่อ) + ผลลัพธ์
-// subject มาจากลิงก์ (#/library/<วิชา>) เมื่อใช้ในหน้าคลังสื่อ
+// subject มาจากลิงก์ (/library/<วิชา>) เมื่อใช้ในหน้าคลังสื่อ
 // ส่วนหน้าแรกจะกรองวิชาในหน้าเดียวกันโดยไม่เปลี่ยนลิงก์
 export default function MediaBrowser({ routeSubject, linkSubjects = false, searchLabel = 'ค้นหาสื่อ' }) {
   const ready = MEDIA.filter((m) => m.status === 'ready');
@@ -35,7 +36,7 @@ export default function MediaBrowser({ routeSubject, linkSubjects = false, searc
   const filtered = q || grade || kind || subject;
   const clearAll = () => {
     setQ(''); setGrade(''); setKind(''); setLocalSubject('');
-    if (linkSubjects && routeSubject) window.location.hash = '#/library';
+    if (linkSubjects && routeSubject) navigate(to.library());
   };
 
   const countIn = (fn) => ready.filter(fn).length;
@@ -65,9 +66,9 @@ export default function MediaBrowser({ routeSubject, linkSubjects = false, searc
         <FilterGroup label="วิชา">
           {linkSubjects ? (
             <>
-              <a className="chip" aria-current={!subject ? 'true' : undefined} href="#/library">ทั้งหมด</a>
+              <a className="chip" aria-current={!subject ? 'true' : undefined} href={to.library()}>ทั้งหมด</a>
               {subjects.map(([k, s]) => (
-                <a key={k} className={`chip subj-${s.color}`} aria-current={subject === k ? 'true' : undefined} href={'#/library/' + k}>
+                <a key={k} className={`chip subj-${s.color}`} aria-current={subject === k ? 'true' : undefined} href={to.library(k)}>
                   <Icon name={SUBJECT_ICON[k]} /> {s.name}
                 </a>
               ))}

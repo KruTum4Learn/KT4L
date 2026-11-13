@@ -1,10 +1,11 @@
 import Icon from './Icon.jsx';
+import { to } from '../lib/router.js';
 
 const LINKS = [
-  { id: 'home', href: '#/', label: 'หน้าหลัก', icon: 'home' },
-  { id: 'library', href: '#/library', label: 'คลังสื่อ', icon: 'grid' },
-  { id: 'science', href: '#/library/science', label: 'วิทยาศาสตร์', icon: 'flask' },
-  { id: 'english', href: '#/library/english', label: 'ภาษาอังกฤษ', icon: 'languages' },
+  { id: 'home', href: to.home(), label: 'หน้าหลัก', icon: 'home' },
+  { id: 'library', href: to.library(), label: 'คลังสื่อ', icon: 'grid' },
+  { id: 'science', href: to.library('science'), label: 'วิทยาศาสตร์', icon: 'flask' },
+  { id: 'english', href: to.library('english'), label: 'ภาษาอังกฤษ', icon: 'languages' },
 ];
 
 export default function Topbar({ section, param }) {
@@ -25,11 +26,11 @@ export default function Topbar({ section, param }) {
       <a className="skip-link" href="#main">ข้ามไปที่เนื้อหา</a>
       <header className="topbar">
         <div className="topbar-inner">
-          <a className="brand" href="#/" aria-label="ห้องเรียนครูตั้ม หน้าหลัก">
-            <span className="brand-mark" aria-hidden="true">ต</span>
+          <a className="brand" href={to.home()} aria-label="ห้องเรียนครูตั้ม หน้าหลัก">
+            <img className="brand-logo" src="/logo.webp" alt="" width="52" height="52" />
             <span className="brand-text">
               <strong>ห้องเรียนครูตั้ม</strong>
-              <small>KruTum4Learn · สื่อการสอนประถม</small>
+              <small>KruTumForLearn · KT4L</small>
             </span>
           </a>
           <nav className="topnav" aria-label="เมนูหลัก">{links('topnav-link')}</nav>

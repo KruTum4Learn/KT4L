@@ -4,32 +4,32 @@
    รายละเอียดและวิธีใช้: design-system/kt4l/MASTER.md
    ============================================================ */
 :root {
-  /* ---------- สีหลัก ---------- */
-  --ink: #1d2340;            /* ตัวหนังสือหลัก เส้นขอบ เงา */
-  --ink-soft: #4a5270;       /* ตัวหนังสือรอง (7.3:1 บนพื้นกระดาษ) */
-  --ink-faint: #6b7290;      /* คำใบ้ placeholder (4.7:1 บนขาว) */
+  /* ---------- สีหลัก (ดึงจากโลโก้ KT4L: กรมท่า ทอง ฟ้า ส้ม) ---------- */
+  --ink: #002b5e;                  /* ตัวหนังสือหลัก เส้นขอบ เงา */
+  --ink-soft: #3e4f72;       /* ตัวหนังสือรอง (7.8:1 บนพื้นกระดาษ) */
+  --ink-faint: #5e6a88;      /* คำใบ้ placeholder (5.4:1 บนขาว) */
   --paper: #fff8ec;          /* พื้นหลังหน้าเว็บ */
   --paper-dot: #efe4cf;      /* จุดลายสมุด */
   --card: #ffffff;           /* พื้นการ์ด กล่อง */
   --line-soft: #eadfca;      /* เส้นแบ่งบางๆ */
 
-  --primary: #2563eb;        /* ปุ่มหลัก ลิงก์ (ตัวขาว 5.2:1) */
-  --primary-hover: #1d4ed8;
+  --primary: #005dba;        /* ปุ่มหลัก ลิงก์ (ตัวขาว 6.4:1) = ฟ้าในโลโก้ */
+  --primary-hover: #004a96;
   --primary-tint: #dcebff;
-  --sun: #ffc83d;            /* ไฮไลต์ ป้ายเด่น (ตัวหมึก 9.9:1) */
+  --sun: #fbad1a;            /* ไฮไลต์ ป้ายเด่น (ตัวหมึก 7.4:1) = ทองในโลโก้ */
   --sun-tint: #fff1c7;
-  --coral: #ff8a65;          /* จุดเน้นตกแต่ง */
+  --coral: #f07a1a;          /* จุดเน้นตกแต่ง = ส้มดวงอาทิตย์ในโลโก้ */
   --success: #0b6b51;
   --success-tint: #d9f5ea;
   --danger: #b42318;
   --danger-tint: #ffe4e0;
 
   /* สีประจำวิชา (ตรงกับค่า color ใน src/data/media.js) */
-  --blue-ink: #1747b5;   --blue-tint: #dcebff;   --blue-fill: #2563eb;
+  --blue-ink: #004a96;   --blue-tint: #dcebff;   --blue-fill: #005dba;
   --pink-ink: #a3214f;   --pink-tint: #ffe1ea;   --pink-fill: #e2557f;
   --purple-ink: #5b34c9; --purple-tint: #ece4ff; --purple-fill: #7c5cf0;
   --orange-ink: #8a5300; --orange-tint: #ffefc2; --orange-fill: #f2a623;
-  --green-ink: #0b6b51;  --green-tint: #d9f5ea;  --green-fill: #1f9d74;
+  --green-ink: #0b6b51;  --green-tint: #d9f5ea;  --green-fill: #007a80;
 
   /* ---------- ตัวอักษร ---------- */
   --font-head: "Mali", "Noto Sans Thai", sans-serif;

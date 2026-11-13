@@ -1,6 +1,7 @@
 import { useRef } from 'react';
 import { SUBJECTS } from '../data/media.js';
 import Icon from '../components/Icon.jsx';
+import { to, asset } from '../lib/router.js';
 
 export default function PlayerPage({ item }) {
   const box = useRef(null);
@@ -10,7 +11,7 @@ export default function PlayerPage({ item }) {
         <span className="empty-icon"><Icon name="search" /></span>
         <h1>ไม่พบสื่อนี้</h1>
         <p>สื่ออาจถูกย้ายหรือยังจัดทำไม่เสร็จ ลองเลือกจากคลังสื่อดูนะ</p>
-        <a className="btn btn-primary" href="#/library">ไปที่คลังสื่อ</a>
+        <a className="btn btn-primary" href={to.library()}>ไปที่คลังสื่อ</a>
       </div>
     );
   }
@@ -23,7 +24,7 @@ export default function PlayerPage({ item }) {
   return (
     <section className="player" aria-labelledby="player-title">
       <div className="player-head">
-        <a className="btn btn-secondary btn-back" href={'#/library/' + item.subject}>
+        <a className="btn btn-secondary btn-back" href={to.library(item.subject)}>
           <Icon name="arrow-left" /> <span>กลับ</span>
         </a>
         <div className="player-title">
@@ -32,12 +33,12 @@ export default function PlayerPage({ item }) {
         </div>
         <div className="player-actions">
           {item.download && (
-            <a className="btn btn-secondary" href={item.download} download>
+            <a className="btn btn-secondary" href={asset(item.download)} download>
               <Icon name="download" /> ดาวน์โหลด
             </a>
           )}
           {item.type === 'html' && (
-            <a className="btn btn-secondary" href={item.src} target="_blank" rel="noreferrer">
+            <a className="btn btn-secondary" href={asset(item.src)} target="_blank" rel="noreferrer">
               <Icon name="external" /> เปิดแท็บใหม่
             </a>
           )}
@@ -50,7 +51,7 @@ export default function PlayerPage({ item }) {
       </div>
       <div className="stage" ref={box}>
         {item.type === 'html'
-          ? <iframe src={item.src} title={item.title} allow="autoplay; fullscreen" />
+          ? <iframe src={asset(item.src)} title={item.title} allow="autoplay; fullscreen" />
           : <div className="react-stage"><Comp /></div>}
       </div>
     </section>

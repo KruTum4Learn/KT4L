@@ -149,14 +149,10 @@ img { max-width: 100%; display: block; }
   display: flex; align-items: center; justify-content: space-between; gap: var(--s5);
 }
 .brand { display: flex; align-items: center; gap: var(--s3); min-height: var(--tap); }
-.brand-mark {
-  width: 44px; height: 44px; flex: none;
-  display: grid; place-items: center;
-  border: var(--border-thin); border-radius: var(--r-md);
-  background: var(--sun);
-  box-shadow: var(--pop-sm);
-  font-family: var(--font-head); font-size: 22px; font-weight: 700;
-  transform: rotate(-4deg);
+.brand-logo {
+  width: 52px; height: 52px; flex: none;
+  border-radius: 50%;
+  filter: drop-shadow(2px 2px 0 var(--ink));
 }
 .brand-text strong, .brand-text small { display: block; }
 .brand-text strong { font-family: var(--font-head); font-size: 19px; line-height: 1.25; }
@@ -211,42 +207,26 @@ img { max-width: 100%; display: block; }
 }
 .hero-stats strong { color: var(--ink); font-family: var(--font-head); font-size: 17px; }
 
-/* ภาพประกอบ: ขวดทดลองแบบวาดมือ */
-.illustration {
-  position: relative; aspect-ratio: 1 / 0.85; min-height: 200px;
-  overflow: hidden;
-  border: var(--border); border-radius: var(--r-lg);
-  background: var(--primary-tint);
+/* โลโก้ใน hero */
+.hero-logo {
+  position: relative;
+  display: grid; place-items: center;
+  padding: var(--s4);
 }
-.ill-sun {
-  position: absolute; top: 14%; right: 14%;
-  width: 52px; height: 52px; border: var(--border-thin); border-radius: 50%;
-  background: var(--sun);
+.hero-logo::before {   /* แสงอาทิตย์จางๆ ด้านหลัง */
+  content: ""; position: absolute; inset: 6%;
+  border-radius: 50%;
+  background: repeating-conic-gradient(var(--sun-tint) 0 10deg, transparent 10deg 20deg);
 }
-.ill-cloud {
-  position: absolute; top: 20%; left: 12%;
-  width: 70px; height: 26px; border: var(--border-thin); border-radius: var(--r-pill);
-  background: #fff;
+.hero-logo img {
+  position: relative;
+  width: min(100%, 300px); height: auto;
+  border-radius: 50%;
+  filter: drop-shadow(5px 5px 0 var(--ink));
+  transform: rotate(-3deg);
+  transition: transform 400ms var(--ease-out);
 }
-.ill-ground {
-  position: absolute; left: -4%; right: -4%; bottom: -2px; height: 26%;
-  border-top: var(--border); border-radius: 50% 50% 0 0 / 30% 30% 0 0;
-  background: #8fdcc0;
-}
-.flask {
-  position: absolute; z-index: 1; left: 50%; bottom: 16%;
-  display: flex; flex-direction: column; align-items: center;
-  transform: translateX(-50%) rotate(6deg);
-}
-.flask-neck { width: 30px; height: 38px; border: var(--border); border-bottom: 0; border-radius: 6px 6px 0 0; background: #fff; }
-.flask-body {
-  position: relative; width: 92px; height: 86px; overflow: hidden;
-  border: var(--border); border-radius: 18px 18px 40px 40px; background: #fff;
-}
-.liquid { position: absolute; inset: auto 0 0 0; height: 48%; border-top: var(--border-thin); background: var(--coral); }
-.bubble { position: absolute; z-index: 1; width: 10px; height: 10px; border: 2px solid var(--ink); border-radius: 50%; background: #fff; }
-.bubble-one { left: 26px; bottom: 16px; }
-.bubble-two { right: 24px; bottom: 30px; width: 7px; height: 7px; }
+.hero-logo:hover img { transform: rotate(2deg) scale(1.02); }
 
 /* ============ ส่วนต่างๆ ============ */
 .section { margin-top: var(--s7); }
@@ -517,6 +497,7 @@ button.pill[aria-pressed="true"] { background: var(--paper); }
   .page-content, .page-content.wide, .footer, .footer.wide, .topbar-inner { width: min(100% - 2 * var(--s4), 100%); }
   .page-content { margin-top: var(--s4); }
   .topbar-inner { min-height: 64px; }
+  .brand-logo { width: 44px; height: 44px; }
   .topnav { display: none; }
 
   /* เมนูล่าง */
@@ -540,7 +521,7 @@ button.pill[aria-pressed="true"] { background: var(--paper); }
   .bottomnav-link[aria-current="page"] .icon { width: 40px; background: var(--sun); border: 2px solid var(--ink); padding: 1px 0; }
 
   .hero { padding: var(--s5); grid-template-columns: 1fr; border-radius: var(--r-lg); box-shadow: var(--pop); }
-  .illustration { display: none; }  /* มือถือ: เน้นช่องค้นหาก่อน */
+  .hero-logo { display: none; }  /* มือถือ: โลโก้อยู่บนแถบแล้ว เน้นช่องค้นหาก่อน */
   .lead { font-size: var(--fs-body); }
   .section { margin-top: var(--s6); }
 

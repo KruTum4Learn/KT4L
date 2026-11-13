@@ -1,11 +1,12 @@
 import { SUBJECTS } from '../data/media.js';
 import Icon from './Icon.jsx';
+import { to, asset } from '../lib/router.js';
 import { SUBJECT_ICON, KIND_ICON, kindOf } from '../lib/mediaView.js';
 
 function Cover({ item, subj }) {
   if (item.thumbnail) {
     return (
-      <img className="card-cover-img" src={item.thumbnail} alt="" loading="lazy" decoding="async" width="640" height="360" />
+      <img className="card-cover-img" src={asset(item.thumbnail)} alt="" loading="lazy" decoding="async" width="640" height="360" />
     );
   }
   // ไม่มีภาพปก: วาดปกจากสีวิชา + ไอคอน
@@ -21,7 +22,7 @@ export default function MediaCard({ item }) {
   const subj = SUBJECTS[item.subject] || SUBJECTS.other;
   const ready = item.status === 'ready';
   const kind = kindOf(item);
-  const href = '#/media/' + item.id;
+  const href = to.learn(item.id);
 
   return (
     <article className={`media-card subj-${subj.color}` + (ready ? '' : ' is-soon')}>
@@ -58,7 +59,7 @@ export default function MediaCard({ item }) {
                 <Icon name="play" /> เปิดสื่อ
               </a>
               {item.download && (
-                <a className="btn btn-secondary" href={item.download} download>
+                <a className="btn btn-secondary" href={asset(item.download)} download>
                   <Icon name="download" /> ดาวน์โหลด
                 </a>
               )}

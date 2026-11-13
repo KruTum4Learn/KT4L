@@ -2,21 +2,12 @@ import { MEDIA, SUBJECTS } from '../data/media.js';
 import MediaBrowser from '../components/MediaBrowser.jsx';
 import Icon from '../components/Icon.jsx';
 import { SUBJECT_ICON } from '../lib/mediaView.js';
+import { to } from '../lib/router.js';
 
-function Illustration() {
+function HeroLogo() {
   return (
-    <div className="illustration" aria-hidden="true">
-      <span className="ill-sun" />
-      <span className="ill-cloud" />
-      <div className="flask">
-        <div className="flask-neck" />
-        <div className="flask-body">
-          <div className="liquid" />
-          <span className="bubble bubble-one" />
-          <span className="bubble bubble-two" />
-        </div>
-      </div>
-      <span className="ill-ground" />
+    <div className="hero-logo">
+      <img src="/logo.webp" alt="โลโก้ KruTumForLearn (KT4L)" width="512" height="512" />
     </div>
   );
 }
@@ -42,7 +33,7 @@ export default function HomePage() {
             <li><strong>ฟรี</strong> ไม่ต้องสมัคร</li>
           </ul>
         </div>
-        <Illustration />
+        <HeroLogo />
       </section>
 
       <section className="section" aria-labelledby="browse-title">
@@ -51,14 +42,14 @@ export default function HomePage() {
             <span className="kicker">ค้นหาสื่อ</span>
             <h2 id="browse-title">วันนี้อยากเรียนอะไรดี</h2>
           </div>
-          <a className="link-arrow" href="#/library">ดูคลังสื่อทั้งหมด <Icon name="arrow-right" /></a>
+          <a className="link-arrow" href={to.library()}>ดูคลังสื่อทั้งหมด <Icon name="arrow-right" /></a>
         </div>
         <MediaBrowser searchLabel="ค้นหาสื่อการสอน" />
       </section>
 
       {featured && (
         <section className="section" aria-labelledby="featured-title">
-          <a className={`featured subj-${SUBJECTS[featured.subject].color}`} href={'#/media/' + featured.id}>
+          <a className={`featured subj-${SUBJECTS[featured.subject].color}`} href={to.learn(featured.id)}>
             <span className="featured-icon"><Icon name={SUBJECT_ICON[featured.subject]} /></span>
             <span className="featured-copy">
               <span className="kicker">สื่อแนะนำ · {SUBJECTS[featured.subject].name} {featured.grade}</span>
