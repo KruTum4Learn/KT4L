@@ -1,32 +1,16 @@
-import { MEDIA, SUBJECTS } from '../data/media.js';
-import MediaCard from '../components/MediaCard.jsx';
+import { SUBJECTS } from '../data/media.js';
+import MediaBrowser from '../components/MediaBrowser.jsx';
 
 export default function LibraryPage({ subject }) {
-  const ready = MEDIA.filter((m) => m.status === 'ready');
-  const list = subject ? ready.filter((m) => m.subject === subject) : ready;
-  const activeSubjects = Object.entries(SUBJECTS).filter(([k]) => ready.some((m) => m.subject === k));
+  const name = subject ? SUBJECTS[subject]?.name : 'สื่อทั้งหมด';
   return (
-    <section className="lesson-section first">
-      <div className="section-heading">
-        <div>
-          <span className="section-kicker">คลังสื่อ</span>
-          <h2 className="page-title">{subject ? SUBJECTS[subject]?.name : 'สื่อทั้งหมด'}</h2>
-        </div>
-        <span className="heading-decoration">✧</span>
+    <section className="section first" aria-labelledby="library-title">
+      <div className="page-head">
+        <span className="kicker">คลังสื่อ</span>
+        <h1 id="library-title">{name || 'ไม่พบวิชานี้'}</h1>
+        <p>ค้นหาหรือกรองตามวิชา ระดับชั้น และประเภทสื่อ แล้วกดเปิดเรียนได้ทันที</p>
       </div>
-      <div className="chips">
-        <a className={'nav-link' + (!subject ? ' active' : '')} href="#/library">ทั้งหมด</a>
-        {activeSubjects.map(([k, s]) => (
-          <a key={k} className={'nav-link' + (subject === k ? ' active' : '')} href={'#/library/' + k}>
-            {s.icon} {s.name}
-          </a>
-        ))}
-      </div>
-      {list.length ? (
-        <div className="stage-grid">{list.map((m) => <MediaCard key={m.id} item={m} />)}</div>
-      ) : (
-        <div className="empty">ยังไม่มีสื่อในวิชานี้ <a href="#/library">ดูสื่อทั้งหมด</a></div>
-      )}
+      <MediaBrowser key={subject || 'all'} routeSubject={subject} linkSubjects searchLabel="ค้นหาในคลังสื่อ" />
     </section>
   );
 }

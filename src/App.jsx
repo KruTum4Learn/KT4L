@@ -27,15 +27,15 @@ export default function App() {
   else page = <HomePage />;
 
   return (
-    <div className="app-shell">
+    <div className="app-shell" data-page={section || 'home'}>
       <Topbar section={section} param={param} />
-      <main className={'page-content' + (section === 'media' ? ' wide' : '')}>
+      <main id="main" tabIndex={-1} className={'page-content' + (section === 'media' ? ' wide' : '')}>
         {page}
-        <footer className="footer">
-          <span>ห้องเรียนครูตั้ม</span>
-          <span>เรียนรู้ด้วยความสงสัย แล้วค้นพบคำตอบด้วยตัวเอง</span>
-        </footer>
       </main>
+      <footer className={'footer' + (section === 'media' ? ' wide' : '')}>
+        <strong>ห้องเรียนครูตั้ม · KT4L</strong>
+        <span>เรียนรู้ด้วยความสงสัย แล้วค้นพบคำตอบด้วยตัวเอง</span>
+      </footer>
     </div>
   );
 }

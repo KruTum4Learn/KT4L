@@ -1,12 +1,13 @@
 import { MEDIA, SUBJECTS } from '../data/media.js';
-import MediaCard from '../components/MediaCard.jsx';
+import MediaBrowser from '../components/MediaBrowser.jsx';
+import Icon from '../components/Icon.jsx';
+import { SUBJECT_ICON } from '../lib/mediaView.js';
 
 function Illustration() {
   return (
-    <div className="illustration" aria-label="ภาพประกอบห้องเรียน">
-      <span className="sun">☀</span>
-      <span className="spark spark-one">✦</span>
-      <span className="spark spark-two">✧</span>
+    <div className="illustration" aria-hidden="true">
+      <span className="ill-sun" />
+      <span className="ill-cloud" />
       <div className="flask">
         <div className="flask-neck" />
         <div className="flask-body">
@@ -15,7 +16,7 @@ function Illustration() {
           <span className="bubble bubble-two" />
         </div>
       </div>
-      <div className="illustration-caption">นักเรียนรู้ตัวน้อย</div>
+      <span className="ill-ground" />
     </div>
   );
 }
@@ -24,76 +25,50 @@ export default function HomePage() {
   const ready = MEDIA.filter((m) => m.status === 'ready');
   const subjects = new Set(ready.map((m) => m.subject)).size;
   const featured = ready[0];
-  const activeSubjects = Object.entries(SUBJECTS).filter(([key]) => ready.some((m) => m.subject === key));
 
   return (
     <>
-      <section className="hero">
+      <section className="hero" aria-labelledby="hero-title">
         <div className="hero-copy">
           <span className="eyebrow">สื่อการสอนประถมศึกษา · เรียนรู้แบบ 5E</span>
-          <h1>ห้องเรียน<br /><span>ครูตั้ม</span></h1>
-          <p>
+          <h1 id="hero-title">ห้องเรียน<span>ครูตั้ม</span></h1>
+          <p className="lead">
             รวมสื่อการสอน เกม และแบบฝึกหัดที่ครูทำเอง
             เปิดเรียนได้ทั้งบนโปรเจกเตอร์ในห้อง และบนมือถือที่บ้าน
           </p>
-          <div className="hero-actions">
-            <a className="button button-primary" href="#/library">
-              <span aria-hidden="true">▶</span> เข้าสู่คลังสื่อ
-            </a>
-          </div>
-          <div className="hero-note">
-            <span className="note-star">✦</span>
-            มีสื่อพร้อมใช้ {ready.length} ชิ้น · {subjects} วิชา
-          </div>
+          <ul className="hero-stats">
+            <li><strong>{ready.length}</strong> สื่อพร้อมใช้</li>
+            <li><strong>{subjects}</strong> วิชา</li>
+            <li><strong>ฟรี</strong> ไม่ต้องสมัคร</li>
+          </ul>
         </div>
         <Illustration />
       </section>
 
+      <section className="section" aria-labelledby="browse-title">
+        <div className="section-head">
+          <div>
+            <span className="kicker">ค้นหาสื่อ</span>
+            <h2 id="browse-title">วันนี้อยากเรียนอะไรดี</h2>
+          </div>
+          <a className="link-arrow" href="#/library">ดูคลังสื่อทั้งหมด <Icon name="arrow-right" /></a>
+        </div>
+        <MediaBrowser searchLabel="ค้นหาสื่อการสอน" />
+      </section>
+
       {featured && (
-        <a className="progress-section featured" href={'#/media/' + featured.id}>
-          <span className="stage-icon featured-icon">{featured.icon}</span>
-          <div className="featured-copy">
-            <span className="section-kicker">สื่อแนะนำวันนี้ · {SUBJECTS[featured.subject].name} {featured.grade}</span>
-            <h2>{featured.title}</h2>
-            <p>{featured.description}</p>
-          </div>
-          <span className="button button-primary">เริ่มเรียน →</span>
-        </a>
+        <section className="section" aria-labelledby="featured-title">
+          <a className={`featured subj-${SUBJECTS[featured.subject].color}`} href={'#/media/' + featured.id}>
+            <span className="featured-icon"><Icon name={SUBJECT_ICON[featured.subject]} /></span>
+            <span className="featured-copy">
+              <span className="kicker">สื่อแนะนำ · {SUBJECTS[featured.subject].name} {featured.grade}</span>
+              <strong id="featured-title">{featured.title}</strong>
+              <span>{featured.description}</span>
+            </span>
+            <span className="btn btn-sun">เริ่มเรียน <Icon name="arrow-right" /></span>
+          </a>
+        </section>
       )}
-
-      <section className="lesson-section">
-        <div className="section-heading">
-          <div>
-            <span className="section-kicker">เลือกตามวิชา</span>
-            <h2>อยากเรียนวิชาอะไรวันนี้</h2>
-          </div>
-          <span className="heading-decoration">✧</span>
-        </div>
-        <div className="subject-grid">
-          {activeSubjects.map(([key, s]) => {
-            const n = ready.filter((m) => m.subject === key).length;
-            return (
-              <a key={key} className={`subject-tile ${s.color}`} href={'#/library/' + key}>
-                <span className="stage-icon">{s.icon}</span>
-                <span><strong>{s.name}</strong><small>{n} สื่อ</small></span>
-              </a>
-            );
-          })}
-        </div>
-      </section>
-
-      <section className="lesson-section">
-        <div className="section-heading">
-          <div>
-            <span className="section-kicker">สื่อล่าสุด</span>
-            <h2>เลือกสื่อที่อยากเรียน</h2>
-          </div>
-          <a className="card-link" href="#/library">ดูทั้งหมด →</a>
-        </div>
-        <div className="stage-grid">
-          {ready.slice(0, 4).map((m) => <MediaCard key={m.id} item={m} />)}
-        </div>
-      </section>
     </>
   );
 }
